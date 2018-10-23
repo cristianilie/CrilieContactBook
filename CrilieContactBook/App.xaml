@@ -2,8 +2,101 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:CrilieContactBook"
-             StartupUri="MainWindow.xaml">
+             xmlns:views="clr-namespace:CrilieContactBook.Views"
+             xmlns:viewModels="clr-namespace:CrilieContactBook.ViewModels"
+             StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
-         
+
+        <!--Data Templates used to connect the Views and ViewModels-->
+        <DataTemplate DataType="{x:Type viewModels:MainViewModel}">
+            <views:MainWindow/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:ContactsViewModel}">
+            <views:ContactsView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:ContactDisplayInfoViewModel}">
+            <views:ContactDisplayInfoView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:ContactEditInfoViewModel}">
+            <views:ContactDisplayInfoView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:EventsViewModel}">
+            <views:EventsView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:ToDoListViewModel}">
+            <views:ToDoListView/>
+        </DataTemplate>
+
+        <!--TextBlock Styles-->
+        <Style x:Key="ContactInfoDisplayStyles" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="#FF3A3A36"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!--TextBox Styles-->
+        <Style x:Key="ContactInfoEditStyles" TargetType="TextBox">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="#FF3A3A36"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Height" Value="44"/>
+
+        </Style>
+
+
+        <!--Brushes (Palette from: https://flatuicolors.com/palette/de)-->
+        <SolidColorBrush x:Key="BlueHorizon" Color="#FF4B6584"/>
+        <SolidColorBrush x:Key="BlueGrey" Color="#FF778CA3"/>
+ 
+        <SolidColorBrush x:Key="Innuendo" Color="#FFA5b1C2"/>
+        <SolidColorBrush x:Key="TwinkleBlue" Color="#FFD1D8E0"/>
+ 
+        <SolidColorBrush x:Key="GloomyPurple" Color="#FF8854D0"/>
+        <SolidColorBrush x:Key="LighterPurple" Color="#FFA55EEA"/>
+ 
+        <SolidColorBrush x:Key="RoyalBlue" Color="#FF3867D6"/>
+        <SolidColorBrush x:Key="NTSC" Color="#FF4B7BEC"/>
+ 
+        <SolidColorBrush x:Key="BoyZone" Color="#FF2D98DA"/>
+        <SolidColorBrush x:Key="HighBlue" Color="#FF45AAF2"/>
+ 
+        <SolidColorBrush x:Key="AlgalFuel" Color="#FF20BF6B"/>
+        <SolidColorBrush x:Key="ReptileGreen" Color="#FF26DE81"/>
+ 
+        <SolidColorBrush x:Key="TurquioseTopaz" Color="#FF0FB9B1"/>
+        <SolidColorBrush x:Key="MaximumBlueGreen" Color="#FF2BCBBA"/>
+ 
+        <SolidColorBrush x:Key="AlmostBlack" Color="#FF131313"/>
+ 
+        <!--Gradient Brushes-->
+        <LinearGradientBrush x:Key="BlueGreyGradient" EndPoint="0,1">
+            <GradientStop Color="#FF4B6584" Offset="0.0" />
+            <GradientStop Color="#FF526B89" Offset="0.5" />
+            <GradientStop Color="#FF59718F" Offset="1.0" />
+        </LinearGradientBrush>
+ 
+        <LinearGradientBrush x:Key="LightBlueGreyGradient" EndPoint="0,1">
+            <GradientStop Color="#FF778CA3" Offset="0.0" />
+            <GradientStop Color="#FF7B8FA4" Offset="0.5" />
+            <GradientStop Color="#FF8798AA" Offset="1.0" />
+        </LinearGradientBrush>
+
+        <Style TargetType="TextBox" x:Key="editContactTextBoxStyle">
+            <Setter Property="Width" Value="330"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Background" Value="#FF131313"/>
+            <Setter Property="Foreground" Value="#FF26DE81"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+        
+
+        
     </Application.Resources>
 </Application>

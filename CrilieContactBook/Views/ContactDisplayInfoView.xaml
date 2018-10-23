@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="CrilieContactBook.Views.ContactDisplayInfoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CrilieContactBook.Views"
+             xmlns:vm="clr-namespace:CrilieContactBook.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="500"
+             Background="AliceBlue" >
+    <Grid Margin="14">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+
+        </Grid.RowDefinitions>
+        
+        <!--Selected Contact Image-->
+        <Grid Margin="5"  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Grid.RowSpan="4" Background="DarkGoldenrod">
+            <Image  Source="/CrilieContactBook;component/Resources/default-user.png" />
+        </Grid>
+        
+        <!--Selected Contact Info-->
+        <TextBlock Style="{StaticResource ContactInfoDisplayStyles}" Padding="10 0 0 0" 
+                   Grid.Column="4" Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="1" 
+                   Text="{Binding ElementName=lstvContacts, Path=SelectedItem.FullName,FallbackValue=Full Name}" 
+                   />
+        
+        <TextBlock Style="{StaticResource ContactInfoDisplayStyles}" Padding="10 0 0 0" 
+                   Text="{Binding ElementName=lstvContacts, Path=SelectedItem.Information,FallbackValue=Information}"
+                   Grid.Column="4" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="2"/>
+
+        <TextBlock Style="{StaticResource ContactInfoDisplayStyles}" Text="{Binding ElementName=lstvContacts, Path=SelectedItem.Phone,FallbackValue=Phone}" Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="4" Grid.RowSpan="1"/>
+        <TextBlock Style="{StaticResource ContactInfoDisplayStyles}" Text="{Binding ElementName=lstvContacts, Path=SelectedItem.Skype,FallbackValue=Skype}" Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="5" Grid.RowSpan="1"/>
+        <TextBlock Style="{StaticResource ContactInfoDisplayStyles}" Text="{Binding ElementName=lstvContacts, Path=SelectedItem.WhatsApp,FallbackValue=WhatsApp}" Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="6" Grid.RowSpan="1"/>
+
+        <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1"  Margin="5">
+            <Image Source="/CrilieContactBook;component/Resources/phone.png"/>
+        </Button>
+        <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="1"  Margin="5">
+            <Image Source="/CrilieContactBook;component/Resources/skype-logo.png"/>
+        </Button>
+        <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="1"  Margin="5">
+            <Image Source="/CrilieContactBook;component/Resources/whatsapp.png"/>
+        </Button>
+
+
+        <!--Selected Contact Add Update Delete-->
+        <StackPanel Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="4" Orientation="Horizontal" VerticalAlignment="Center">
+            <Button Grid.Column="4" Grid.ColumnSpan="1" Margin="5">
+                <Image Source="/CrilieContactBook;component/Resources/add-user.png"/>
+            </Button>
+            <Button Grid.Column="5" Grid.ColumnSpan="1" Margin="5">
+                <Image Source="/CrilieContactBook;component/Resources/settings.png"/>
+            </Button>
+            <Button Grid.Column="6" Grid.ColumnSpan="1" Margin="5">
+                <Image Source="/CrilieContactBook;component/Resources/remove-user.png"/>
+            </Button>
+        </StackPanel>
+        
+
+
+    </Grid>
+</UserControl>

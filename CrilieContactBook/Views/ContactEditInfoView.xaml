@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="CrilieContactBook.Views.ContactEditInfoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CrilieContactBook.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="500"
+             Background="Honeydew">
+    <Grid Margin="14">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+
+        </Grid.RowDefinitions>
+
+        <!--Selected Contact Image-->
+        <Grid Margin="5"  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Grid.RowSpan="4" Background="DarkGoldenrod">
+            <Image  Source="/CrilieContactBook;component/Resources/default-user.png" />
+
+        </Grid>
+
+        <!--Selected Contact Info-->
+        <TextBox Style="{StaticResource ContactInfoEditStyles}" Padding="10 0 0 0" Text="FullName" Grid.Column="4" Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="1"/>
+        <TextBox Style="{StaticResource ContactInfoEditStyles}" Padding="10 0 0 0" Text="Infoooo ooooo ooo" Grid.Column="4" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="2"/>
+        <TextBox Style="{StaticResource ContactInfoEditStyles}" Text="Phone" Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="4" Grid.RowSpan="1"/>
+        <TextBox Style="{StaticResource ContactInfoEditStyles}" Text="Skype" Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="5" Grid.RowSpan="1"/>
+        <TextBox Style="{StaticResource ContactInfoEditStyles}" Text="Whatsapp" Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="6" Grid.RowSpan="1"/>
+
+        <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1"  Margin="5">
+            <Image Source="/CrilieContactBook;component/Resources/phone.png"/>
+        </Button>
+        <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="1"  Margin="5">
+            <Image Source="/CrilieContactBook;component/Resources/skype-logo.png"/>
+        </Button>
+        <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="1"  Margin="5">
+            <Image Source="/CrilieContactBook;component/Resources/whatsapp.png"/>
+        </Button>
+
+
+
+        <!--Selected Contact Add Update Delete-->
+        <StackPanel Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="4" Orientation="Horizontal" VerticalAlignment="Center">
+            <Button Margin="5">
+                <Image Source="/CrilieContactBook;component/Resources/open-add-folder.png"/>
+            </Button>
+            <Button Margin="5">
+                <Image Source="/CrilieContactBook;component/Resources/add-user.png"/>
+            </Button>
+            <Button Margin="5">
+                <Image Source="/CrilieContactBook;component/Resources/floppy-disk-digital-data-storage-or-save-interface-symbol.png"/>
+            </Button>
+            <Button Margin="5">
+                <Image Source="return-button.png"/>
+            </Button>
+        </StackPanel>
+
+
+
+    </Grid>
+</UserControl>
