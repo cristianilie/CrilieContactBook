@@ -8,7 +8,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="500"
              Background="AliceBlue" >
-    <Grid Margin="14">
+    <Grid>
+        <Grid Margin="14" Visibility="{Binding ShowGridWithContactInfo}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -63,18 +64,27 @@
 
         <!--Selected Contact Add Update Delete-->
         <StackPanel Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="4" Orientation="Horizontal" VerticalAlignment="Center">
-            <Button Grid.Column="4" Grid.ColumnSpan="1" Margin="5">
+            <Button Grid.Column="4" Grid.ColumnSpan="1" Margin="5" Command="{Binding SwitchViewToAddNewContactCommand}">
                 <Image Source="/CrilieContactBook;component/Resources/add-user.png"/>
             </Button>
-            <Button Grid.Column="5" Grid.ColumnSpan="1" Margin="5">
+            <Button Grid.Column="5" Grid.ColumnSpan="1" Margin="5" Command="{Binding SwitchToContactEditViewCommand}">
                 <Image Source="/CrilieContactBook;component/Resources/settings.png"/>
             </Button>
             <Button Grid.Column="6" Grid.ColumnSpan="1" Margin="5">
                 <Image Source="/CrilieContactBook;component/Resources/remove-user.png"/>
             </Button>
         </StackPanel>
-        
-
-
     </Grid>
+
+        <DockPanel Visibility="{Binding ShowDeletionDialog}">
+            <TextBlock DockPanel.Dock="Top" Text="Are you sure you want to delete the selected contact?" Style="{StaticResource ContactInfoDisplayStyles}" Padding="10 140 10 10"/>
+            <StackPanel Height="100" Orientation="Horizontal" DockPanel.Dock="Top"  VerticalAlignment="Top">
+                <Button Height="34" Width="230" Margin="10" Content="Yes"/>
+                <Button Height="34" Width="230" Margin="10" Content="Cancel" />
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+
+
+    
 </UserControl>

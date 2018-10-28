@@ -16,12 +16,12 @@
             <views:ContactsView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:ContactDisplayInfoViewModel}">
+        <DataTemplate  DataType="{x:Type viewModels:ContactDisplayInfoViewModel}">
             <views:ContactDisplayInfoView/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModels:ContactEditInfoViewModel}">
-            <views:ContactDisplayInfoView/>
+            <views:ContactEditInfoView/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModels:EventsViewModel}">

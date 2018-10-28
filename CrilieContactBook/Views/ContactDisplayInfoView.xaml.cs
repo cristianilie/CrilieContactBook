@@ -24,7 +24,7 @@ namespace CrilieContactBook.Views
         public ContactDisplayInfoView()
         {
             InitializeComponent();
-            DataContext = new ContactDisplayInfoViewModel();
+            //DataContext = new ContactDisplayInfoViewModel();
         }
     }
 }
