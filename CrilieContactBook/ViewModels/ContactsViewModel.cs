@@ -31,6 +31,17 @@ namespace CrilieContactBook.ViewModels
         }
 
 
+        private ObservableCollection<Contact> contactsList2;
+        public ObservableCollection<Contact> ContactsList2
+        {
+            get { return contactsList2; }
+            set
+            {
+                contactsList2 = value;
+                RaisePropertyChanged();
+            }
+        }
+
         //The selected contact from the Contacts listview
         private Contact selectedContact;
         public Contact SelectedContact
@@ -50,60 +61,37 @@ namespace CrilieContactBook.ViewModels
             ContactEditInfoVM = new ContactEditInfoViewModel(this, ContactsManagementState.Default);
             SelectedContactView = ContactDisplayInfoVM;
 
-            ContactsList = new ObservableCollection<Contact>();
-
-            ContactsList.Add(new Contact
-            {
-                Id = 1,
-                FullName = "Fane",
-                Information = "Information 1",
-                Phone = "23443",
-                WhatsApp = "234 fsdsf",
-                Skype = "234esddds"
-            });
-            ContactsList.Add(new Contact
-            {
-                Id = 2,
-                FullName = "Iwan",
-                Information = "Information 2",
-                Phone = "23w443",
-                WhatsApp = "234 fsdsf",
-                Skype = "234sddds"
-            });
-            ContactsList.Add(new Contact
-            {
-                Id = 3,
-                FullName = "Cula1e",
-                Information = "Information 3",
-                Phone = "23e443",
-                WhatsApp = "234 fsdxsf",
-                Skype = "234sdxdds"
-            });
-
+            ContactsList = ContactBookDbManagement.LoadContacts();
         }
 
-        //TO DO - Load Contact list(after implementing SQLITE
+        //Load Contact listfrom our  SQLITE database
         private void LoadContacts()
         {
-
+            ContactsList = ContactBookDbManagement.LoadContacts();
         }
 
-        //Adds a new contact to the database/Contact list
+        //Adds a new contact to the database
         public void AddContact(Contact _contact)
         {
-                ContactsList.Add(_contact);
+            ContactBookDbManagement.AddContact(_contact);
+            LoadContacts();
         }
 
         //Edits a contact's details
         public void EditContact(Contact _contact)
         {
-            ContactsList[ContactsList.IndexOf(_contact)] = _contact;
+            ContactBookDbManagement.UpdateContact(_contact);
+            LoadContacts();
         }
 
-        //Deletes a contact
-        public void DeleteContact(Contact _contact)
+        //Deletes a contact from the database
+        public void DeleteContact()
         {
-            ContactsList.Remove(_contact);
+            if (SelectedContact != null)
+            {
+                ContactBookDbManagement.DeleteContact(SelectedContact);
+                LoadContacts();
+            }
         }
 
 

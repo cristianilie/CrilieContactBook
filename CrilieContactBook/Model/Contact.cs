@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Windows.Controls;
 
 namespace CrilieContactBook.Model
 {
@@ -7,6 +8,8 @@ namespace CrilieContactBook.Model
         public int Id { get; set; }
 
         public string FullName { get; set; }
+
+        //public Image ContactImage { get; set; }
 
         public string Information { get; set; }
 
