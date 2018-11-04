@@ -5,9 +5,82 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CrilieContactBook.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="400" d:DesignWidth="800"
              Background="DarkSeaGreen">
-    <Grid>
-        <TextBlock Text=" to do list view" FontSize="44" Foreground="DarkOrange"/>
-    </Grid>
+    <DockPanel>
+        <!-- Task List & Filters -->
+        <DockPanel DockPanel.Dock="Left ">
+            <Grid Background="{StaticResource TwinkleBlue}" DockPanel.Dock="Top" Width="280" Height="60">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Left">
+                        <StackPanel Orientation="Horizontal" Width="140">
+                            <CheckBox  Style="{StaticResource taskFilterCheckboxStyle}"/>
+                            <TextBlock Style="{StaticResource taskFilterTextBlockStyle}" Text="Active" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Width="140">
+                            <CheckBox Style="{StaticResource taskFilterCheckboxStyle}" />
+                            <TextBlock Style="{StaticResource taskFilterTextBlockStyle}"  Text="Completed" />
+                        </StackPanel>
+  
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Right">
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Style="{StaticResource taskFilterCheckboxStyle}" IsChecked="True"/>
+                            <TextBlock Style="{StaticResource taskFilterTextBlockStyle}" Text="All" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Style="{StaticResource taskFilterCheckboxStyle}" />
+                            <TextBlock Style="{StaticResource taskFilterTextBlockStyle}" Text="Failed" />
+                        </StackPanel>
+                    </StackPanel>
+                </DockPanel>
+                
+
+            </Grid>
+            
+            <Grid DockPanel.Dock="Bottom" Width="280">
+                <ListView x:Name="lstvTasks" ItemsSource="{Binding TaskList, UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" SelectedItem="{Binding SelectedTask,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Style="{StaticResource ContactInfoDisplayStyles}" Text="{Binding TaskName}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </DockPanel>
+        
+        <!-- Task List Info/Description-->
+        <Grid DockPanel.Dock="Right">            
+            <StackPanel HorizontalAlignment="Center">
+                
+                <!--Task Management Buttons-->
+                <StackPanel Orientation="Horizontal" Margin="0 5">
+                    <Button Style="{StaticResource tasksButtonsStyle}" Content="Add Task"/>
+                    <Button Style="{StaticResource tasksButtonsStyle}" Content="Edit Task"/>
+                    <Button Style="{StaticResource tasksButtonsStyle}" Content="Delete Task"/>
+                    <Button Style="{StaticResource tasksButtonsStyle}" Content="Completed!"/>
+                </StackPanel>
+                
+                <!--Task Info/Edit fields-->
+                <StackPanel>
+                    <TextBox Style="{StaticResource taskListTextBoxStyle}" Text="Task Name"/>
+                    <TextBox Style="{StaticResource taskListTextBoxStyle}" Height="84" TextWrapping="Wrap" Text="Task Description"/>
+                    <DatePicker Style="{StaticResource deadlineDatePickerStyle}" Margin="5" />
+                    <ComboBox Style="{StaticResource taskListComboBoxStyle}"/>
+                </StackPanel>
+                
+                <!--Task "Statistics"-->
+                <StackPanel Background="{StaticResource AlmostBlack}"  Margin="5">
+                    <StackPanel  Margin="0 5" Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource taskStatsTextBlockStyle}" Text="x" Width="28" Margin="10 0 0 0"/>
+                        <TextBlock Style="{StaticResource taskStatsTextBlockStyle}" Text="Tasks Finished" />
+                    </StackPanel>
+                    <StackPanel  Margin="0 5" Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource taskStatsTextBlockStyle}" Text="x" Width="28" Margin="10 0 0 0"/>
+                        <TextBlock Style="{StaticResource taskStatsTextBlockStyle}" Text="Tasks Failed"/>
+                    </StackPanel>
+                 </StackPanel>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </UserControl>

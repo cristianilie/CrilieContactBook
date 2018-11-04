@@ -15,5 +15,7 @@ namespace CrilieContactBook.Model
         public int Importance { get; set; }
 
         public DateTime Deadline { get; set; }
+
+        public bool Completed { get; set; }
     }
 }

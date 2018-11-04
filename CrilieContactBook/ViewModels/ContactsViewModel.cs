@@ -29,19 +29,7 @@ namespace CrilieContactBook.ViewModels
                 RaisePropertyChanged();
             }
         }
-
-
-        private ObservableCollection<Contact> contactsList2;
-        public ObservableCollection<Contact> ContactsList2
-        {
-            get { return contactsList2; }
-            set
-            {
-                contactsList2 = value;
-                RaisePropertyChanged();
-            }
-        }
-
+        
         //The selected contact from the Contacts listview
         private Contact selectedContact;
         public Contact SelectedContact

@@ -67,6 +67,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\ContactBookDbManagement.cs" />
+    <Compile Include="Model\TaskImportance.cs" />
     <Compile Include="Model\TaskToComplete.cs" />
     <Compile Include="ViewModels\Commands\ViewSwitchCommand.cs" />
     <Compile Include="ViewModels\ContactDisplayInfoViewModel.cs" />
