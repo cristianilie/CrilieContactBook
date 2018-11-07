@@ -49,26 +49,26 @@ namespace CrilieContactBook.ViewModels
             ContactEditInfoVM = new ContactEditInfoViewModel(this, ContactsManagementState.Default);
             SelectedContactView = ContactDisplayInfoVM;
 
-            ContactsList = ContactBookDbManagement.LoadContacts();
+            ContactsList = ContactDbManagement.LoadContacts();
         }
 
         //Load Contact listfrom our  SQLITE database
         private void LoadContacts()
         {
-            ContactsList = ContactBookDbManagement.LoadContacts();
+            ContactsList = ContactDbManagement.LoadContacts();
         }
 
         //Adds a new contact to the database
         public void AddContact(Contact _contact)
         {
-            ContactBookDbManagement.AddContact(_contact);
+            ContactDbManagement.AddContact(_contact);
             LoadContacts();
         }
 
         //Edits a contact's details
         public void EditContact(Contact _contact)
         {
-            ContactBookDbManagement.UpdateContact(_contact);
+            ContactDbManagement.UpdateContact(_contact);
             LoadContacts();
         }
 
@@ -77,7 +77,7 @@ namespace CrilieContactBook.ViewModels
         {
             if (SelectedContact != null)
             {
-                ContactBookDbManagement.DeleteContact(SelectedContact);
+                ContactDbManagement.DeleteContact(SelectedContact);
                 LoadContacts();
             }
         }

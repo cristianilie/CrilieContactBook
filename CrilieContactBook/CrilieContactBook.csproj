@@ -66,9 +66,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\ContactBookDbManagement.cs" />
+    <Compile Include="Model\ContactDbManagement.cs" />
     <Compile Include="Model\TaskImportance.cs" />
     <Compile Include="Model\TaskToComplete.cs" />
+    <Compile Include="Model\TaskToCompleteDbManagement.cs" />
+    <Compile Include="ViewModels\Commands\TaskToCompleteCommand.cs" />
     <Compile Include="ViewModels\Commands\ViewSwitchCommand.cs" />
     <Compile Include="ViewModels\ContactDisplayInfoViewModel.cs" />
     <Compile Include="ViewModels\ContactEditInfoViewModel.cs" />

@@ -10,7 +10,9 @@ namespace CrilieContactBook.Model
     {
         public int Id { get; set; }
 
-        public string TaskName { get; set; }
+        public string Name { get; set; }
+
+        public string Description { get; set; }
 
         public int Importance { get; set; }
 

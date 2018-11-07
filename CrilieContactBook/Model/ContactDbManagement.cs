@@ -8,7 +8,7 @@ using System.Data.SQLite;
 
 namespace CrilieContactBook.Model
 {
-    public class ContactBookDbManagement
+    public class ContactDbManagement
     {
 
         //Loads the Contact database and returns it as an observable collection
