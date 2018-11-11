@@ -4,40 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CrilieContactBook.Views"
+             xmlns:vm="clr-namespace:CrilieContactBook.ViewModels"
+             xmlns:vm1="clr-namespace:CrilieContactBook"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="800"
              Background="DarkSeaGreen">
     <DockPanel>
         <!-- Task List & Filters -->
         <DockPanel DockPanel.Dock="Left ">
+            
+            <!--Task Filter-->
             <Grid Background="{StaticResource TwinkleBlue}" DockPanel.Dock="Top" Width="280" Height="60">
-                <DockPanel>
-                    <StackPanel DockPanel.Dock="Left">
-                        <StackPanel Orientation="Horizontal" Width="140">
-                            <CheckBox  Style="{StaticResource taskFilterCheckboxStyle}" IsChecked="True"/>
-                            <TextBlock Style="{StaticResource taskFilterTextBlockStyle}" Text="Active" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Width="140">
-                            <CheckBox Style="{StaticResource taskFilterCheckboxStyle}" />
-                            <TextBlock Style="{StaticResource taskFilterTextBlockStyle}"  Text="Completed" />
-                        </StackPanel>
-  
-                    </StackPanel>
-                    <StackPanel DockPanel.Dock="Right">
-                        <StackPanel Orientation="Horizontal">
-                            <CheckBox Style="{StaticResource taskFilterCheckboxStyle}" />
-                            <TextBlock Style="{StaticResource taskFilterTextBlockStyle}" Text="All" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <CheckBox Style="{StaticResource taskFilterCheckboxStyle}" />
-                            <TextBlock Style="{StaticResource taskFilterTextBlockStyle}" Text="Failed" />
-                        </StackPanel>
-                    </StackPanel>
-                </DockPanel>
-                
-
+                <StackPanel>
+                    <TextBlock Text="Task list filters: " Style="{StaticResource taskFilterTextBlockStyle}"/>
+                    <ComboBox ItemsSource="{Binding Source={vm:EnumBindingSourceExtension {x:Type vm:TaskListFilter}}}" SelectedItem="{Binding SelectedTaskFilter,UpdateSourceTrigger=PropertyChanged}" Height="28" FontSize="18"/>
+                </StackPanel>
             </Grid>
             
+            <!--Task List-->
             <Grid DockPanel.Dock="Bottom" Width="280">
                 <ListView x:Name="lstvTasks" ItemsSource="{Binding TaskList, UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" SelectedItem="{Binding SelectedTask,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
                     <ListView.ItemTemplate>
@@ -64,14 +48,16 @@
                 <!--Task Info/Edit fields-->
                 <StackPanel>
                     <TextBox IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Text="{Binding SelectedTask.Name}"/>
-                    <TextBox IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Height="100" TextWrapping="Wrap" Text="{Binding SelectedTask.Description}"/>
+                    <ScrollViewer Height="100" Margin="0 0 7 0"> 
+                        <TextBox IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Height="100" Width="440" TextWrapping="Wrap" Text="{Binding SelectedTask.Description}"/>
+                    </ScrollViewer>
                     <DatePicker Style="{StaticResource deadlineDatePickerStyle}" Margin="5" SelectedDate="{Binding SelectedTask.Deadline}" />
-                    <ComboBox IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListComboBoxStyle}"/>
+                    <ComboBox IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={vm:EnumBindingSourceExtension {x:Type vm:TaskImportance}}}" SelectedItem="{Binding SelectedTaskImportance, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListComboBoxStyle}"/>
                 </StackPanel>
                 
                 <!--Task "Statistics"-->
-                <StackPanel Margin="5">
-                    <StackPanel  Margin="0 14" Orientation="Horizontal">
+                <StackPanel Margin="5" Visibility="{Binding FinisherButtonsVisibility, UpdateSourceTrigger=PropertyChanged}">
+                    <StackPanel  Margin="0 4" Orientation="Horizontal">
                         <Button Content="{Binding ButtonFinisherText}" Style="{StaticResource tasksButtonsStyle}" Command="{Binding FinisherTaskCommand}" />
                         <Button Style="{StaticResource tasksButtonsStyle}" Content="Cancel" />
                     </StackPanel>

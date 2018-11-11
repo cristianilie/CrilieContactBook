@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrilieContactBook.Model
+namespace CrilieContactBook.ViewModels
 {
-    public enum TaskImportance
+    public enum TaskListFilter
     {
-       Low = 1,
-       Average,
-       High,
-       Vital
+        All,
+        Active,
+        Completed,
+        Failed
     }
 }
