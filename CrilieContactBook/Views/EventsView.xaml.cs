@@ -26,5 +26,6 @@ namespace CrilieContactBook.Views
             InitializeComponent();
             DataContext = new EventsViewModel();
         }
+
     }
 }

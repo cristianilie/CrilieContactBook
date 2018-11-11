@@ -7,11 +7,11 @@ using System.Windows.Input;
 
 namespace CrilieContactBook.ViewModels.Commands
 {
-    public class TaskToCompleteCommand : ICommand
+    public class IntermediaryCommand : ICommand
     {
         private Action _exec;
 
-        public TaskToCompleteCommand(Action exec)
+        public IntermediaryCommand(Action exec)
         {
             if (exec == null)
                 throw new NullReferenceException("Exec is null!");

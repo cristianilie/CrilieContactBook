@@ -34,7 +34,7 @@ namespace CrilieContactBook.ViewModels
             }
         }
 
-        //The Importance of the selected Task
+        //The Importance of the Selected Task
         private TaskImportance selectedTaskImportance;
         public TaskImportance SelectedTaskImportance
         {
@@ -46,7 +46,7 @@ namespace CrilieContactBook.ViewModels
             }
         }
 
-        //Variable used to change the state of the SelectedTask's fields and make them editable or read only
+        //Variable used to change the state of the Selected Task's fields and make them editable or read only
         private bool _notEditable = true;
         public bool NotEditable
         {
@@ -58,11 +58,8 @@ namespace CrilieContactBook.ViewModels
             }
         }
 
-        //Variable used to specify the final Add/Update/DeleteConfirm button's content
+        //The text that appears on the button that fisnishes the CRUD commands on tasks
         private string buttonFinisherText;
-        private ICommand _finisherTaskCommand;
-
-        //The text that Appears on the button that fisnishes the CRUD commands on tasks
         public string ButtonFinisherText
         {
             get { return buttonFinisherText; }
@@ -120,21 +117,22 @@ namespace CrilieContactBook.ViewModels
         public ToDoListViewModel()
         {
             TaskList = TaskToCompleteDbManagement.LoadTasks();
-            PrepareToAddNewTaskCommand = new TaskToCompleteCommand(PrepareToAddTask);
-            PrepareToEditTaskCommand = new TaskToCompleteCommand(PrepareToEditTask);
-            PrepareToDeleteTaskCommand = new TaskToCompleteCommand(PrepareToDeleteTask);
-            PrepareToCompleteTaskCommand = new TaskToCompleteCommand(PrepareMarkAsCompleted);
+            PrepareToAddNewTaskCommand = new IntermediaryCommand(PrepareToAddTask);
+            PrepareToEditTaskCommand = new IntermediaryCommand(PrepareToEditTask);
+            PrepareToDeleteTaskCommand = new IntermediaryCommand(PrepareToDeleteTask);
+            PrepareToCompleteTaskCommand = new IntermediaryCommand(PrepareMarkAsCompleted);
             FinisherButtonsVisibility = Visibility.Hidden;
             SelectedTaskFilter = TaskListFilter.Active;
         }
 
 
         //CRUD COMMANDS
-        public TaskToCompleteCommand PrepareToAddNewTaskCommand { get; private set; }
-        public TaskToCompleteCommand PrepareToEditTaskCommand { get; private set; }
-        public TaskToCompleteCommand PrepareToDeleteTaskCommand { get; private set; }
-        public TaskToCompleteCommand PrepareToCompleteTaskCommand { get; private set; }
+        public IntermediaryCommand PrepareToAddNewTaskCommand { get; private set; }
+        public IntermediaryCommand PrepareToEditTaskCommand { get; private set; }
+        public IntermediaryCommand PrepareToDeleteTaskCommand { get; private set; }
+        public IntermediaryCommand PrepareToCompleteTaskCommand { get; private set; }
 
+        private ICommand _finisherTaskCommand;
         public ICommand FinisherTaskCommand
         {
             get => _finisherTaskCommand;
@@ -147,18 +145,18 @@ namespace CrilieContactBook.ViewModels
 
 
 
-        //Sets up the command and wires it up with the method to add a new task
+        //Sets up the command and wires it up with the method to add a new Task
         private void PrepareToAddTask()
         {
             SelectedTask = new TaskToComplete();
             SelectedTask.Importance = 3;
             ButtonFinisherText = "Add Task";
-            FinisherTaskCommand = new TaskToCompleteCommand(AddNewTask);
+            FinisherTaskCommand = new IntermediaryCommand(AddNewTask);
             NotEditable = false;
             FinisherButtonsVisibility = System.Windows.Visibility.Visible;
         }
 
-        //Add new task to database and resets the Selected task and UI Elements bound to it
+        //Add new Task to database and resets the Selected task and UI Elements bound to it
         public void AddNewTask()
         {
             TaskToCompleteDbManagement.AddTaskToComplete(SelectedTask);
@@ -169,17 +167,17 @@ namespace CrilieContactBook.ViewModels
         }
 
 
-        //Sets up the command and wires it up with the method to edit/update the selected task
+        //Sets up the command and wires it up with the method to edit/update the Selected Task
         private void PrepareToEditTask()
         {
             ButtonFinisherText = "Edit Task";
-            FinisherTaskCommand = new TaskToCompleteCommand(EditTask);
+            FinisherTaskCommand = new IntermediaryCommand(EditTask);
             NotEditable = false;
             FinisherButtonsVisibility = System.Windows.Visibility.Visible;
 
         }
 
-        //Edits the Selected task in the database and resets the UI elements bound to it
+        //Edits the Selected Task in the database and resets the UI elements bound to it
         public void EditTask()
         {
             if (SelectedTask != null)
@@ -193,16 +191,16 @@ namespace CrilieContactBook.ViewModels
             }
         }
 
-        //Sets up the command and wires it up with the method to delete the selected task
+        //Sets up the command and wires it up with the method to delete the Selected Task
         private void PrepareToDeleteTask()
         {
             ButtonFinisherText = "Delete Task";
-            FinisherTaskCommand = new TaskToCompleteCommand(DeleteTask);
+            FinisherTaskCommand = new IntermediaryCommand(DeleteTask);
             NotEditable = true;
             FinisherButtonsVisibility = System.Windows.Visibility.Visible;
         }
 
-        //Deletes the Selected task from the database and resets the UI elements bound to it
+        //Deletes the Selected Task from the database and resets the UI elements bound to it
         public void DeleteTask()
         {
             if (SelectedTask != null)
@@ -215,16 +213,16 @@ namespace CrilieContactBook.ViewModels
         }
 
 
-        //Sets up the command and wires it up with the method to delete the selected task
+        //Sets up the command and wires it up with the method to delete the Selected Task
         private void PrepareMarkAsCompleted()
         {
             ButtonFinisherText = "Completed!";
-            FinisherTaskCommand = new TaskToCompleteCommand(MarkAsCompleted);
+            FinisherTaskCommand = new IntermediaryCommand(MarkAsCompleted);
             NotEditable = true;
             FinisherButtonsVisibility = System.Windows.Visibility.Visible;
         }
 
-        //Marks as completed the Selected task from the database, and updates it and resets the UI elements bound to it
+        //Marks as completed the Selected Task from the database, and updates it and resets the UI elements bound to it
         public void MarkAsCompleted()
         {
             if (SelectedTask != null)

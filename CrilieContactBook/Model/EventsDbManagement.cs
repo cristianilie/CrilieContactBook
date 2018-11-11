@@ -11,43 +11,43 @@ using System.Threading.Tasks;
 
 namespace CrilieContactBook.Model
 {
-    public class TaskToCompleteDbManagement
+    public class EventsDbManagement
     {
         //Loads the TaskToComplete database and returns it as an observable collection
-        public static ObservableCollection<TaskToComplete> LoadTasks()
+        public static ObservableCollection<Event> LoadEvents()
         {
             using (IDbConnection con = new SQLiteConnection(LoadConnectiobString()))
             {
-                var result = con.Query<TaskToComplete>("select * from TaskToComplete", new DynamicParameters());
+                var result = con.Query<Event>("select * from Event", new DynamicParameters());
 
-                return new ObservableCollection<TaskToComplete>(result as List<TaskToComplete>);
+                return new ObservableCollection<Event>(result as List<Event>);
             }
         }
 
-        //Adds a new TaskToComplete to the Database
-        public static void AddTaskToComplete(TaskToComplete _task)
+        //Adds a new Event to the Database
+        public static void AddEvent(Event _event)
         {
             using (IDbConnection con = new SQLiteConnection(LoadConnectiobString()))
             {
-                con.Execute("Insert into TaskToComplete(Name, Description, Importance, Deadline, Completed) values(@Name,@Description, @Importance, @Deadline, @Completed)", _task);
+                con.Execute("Insert into Event(ScheduledDate, Title, Description) values(@ScheduledDate,@Title, @Description)", _event);
             }
         }
 
-        //Updates a TaskToComplete's details in the database
-        public static void UpdateTaskToComplete(TaskToComplete _task)
+        //Updates an Event's details in the database
+        public static void UpdateEvent(Event _event)
         {
             using (IDbConnection con = new SQLiteConnection(LoadConnectiobString()))
             {
-                con.Execute("Update TaskToComplete Set Name=@Name, Description=@Description, Importance=@Importance, Deadline=@Deadline, Completed=@Completed Where Id=@Id", _task);
+                con.Execute("Update Event Set ScheduledDate=@ScheduledDate, Title=@Title, Description=@Description Where Id=@Id", _event);
             }
         }
 
-        //Deletes a TaskToComplete from the database
-        public static void DeleteTask(TaskToComplete _task)
+        //Deletes an Event from the database
+        public static void DeleteEvent(Event _event)
         {
             using (IDbConnection con = new SQLiteConnection(LoadConnectiobString()))
             {
-                con.Execute("Delete from TaskToComplete Where Id=@Id", _task);
+                con.Execute("Delete from Event Where Id=@Id", _event);
             }
         }
 
@@ -56,5 +56,6 @@ namespace CrilieContactBook.Model
         {
             return ConfigurationManager.ConnectionStrings[_id].ConnectionString;
         }
+
     }
 }

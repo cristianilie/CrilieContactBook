@@ -67,12 +67,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\ContactDbManagement.cs" />
+    <Compile Include="Model\Event.cs" />
+    <Compile Include="Model\EventsDbManagement.cs" />
     <Compile Include="ViewModels\Enums\EnumBindingSourceExtension.cs" />
+    <Compile Include="ViewModels\Enums\EventListFilter.cs" />
     <Compile Include="ViewModels\Enums\TaskImportance.cs" />
     <Compile Include="ViewModels\Enums\TaskListFilter.cs" />
     <Compile Include="Model\TaskToComplete.cs" />
     <Compile Include="Model\TaskToCompleteDbManagement.cs" />
-    <Compile Include="ViewModels\Commands\TaskToCompleteCommand.cs" />
+    <Compile Include="ViewModels\Commands\IntermediaryCommand.cs" />
     <Compile Include="ViewModels\Commands\ViewSwitchCommand.cs" />
     <Compile Include="ViewModels\ContactDisplayInfoViewModel.cs" />
     <Compile Include="ViewModels\ContactEditInfoViewModel.cs" />
