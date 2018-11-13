@@ -59,7 +59,7 @@
                 <StackPanel Margin="5" Visibility="{Binding FinisherButtonsVisibility, UpdateSourceTrigger=PropertyChanged}">
                     <StackPanel  Margin="0 4" Orientation="Horizontal">
                         <Button Content="{Binding ButtonFinisherText}" Style="{StaticResource tasksButtonsStyle}" Command="{Binding FinisherTaskCommand}" />
-                        <Button Style="{StaticResource tasksButtonsStyle}" Content="Cancel" />
+                        <Button Style="{StaticResource tasksButtonsStyle}" Content="Cancel"  Command="{Binding CancelCommand}"/>
                     </StackPanel>
                    
                  </StackPanel>

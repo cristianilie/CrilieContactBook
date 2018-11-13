@@ -1,12 +1,7 @@
 ﻿using CrilieContactBook.Model;
 using CrilieContactBook.ViewModels.Commands;
 using CrilieContactBook.ViewModels.Enums;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -112,7 +107,13 @@ namespace CrilieContactBook.ViewModels
         //Default Constructor
         public EventsViewModel()
         {
-
+            EventList = EventsDbManagement.LoadEvents();
+            PrepareToAddNewEventCommand = new IntermediaryCommand(PrepareToAddEvent);
+            PrepareToEditEventCommand = new IntermediaryCommand(PrepareToEditEvent);
+            PrepareToDeleteEventCommand = new IntermediaryCommand(PrepareToDeleteEvent);
+            PrepareToCompleteEventCommand = new IntermediaryCommand(PrepareToFinish);
+            CancelCommand = new IntermediaryCommand(Cancel);
+            FinisherButtonsVisibility = Visibility.Hidden;
         }
 
         //CRUD COMMANDS
@@ -120,6 +121,7 @@ namespace CrilieContactBook.ViewModels
         public IntermediaryCommand PrepareToEditEventCommand { get; private set; }
         public IntermediaryCommand PrepareToDeleteEventCommand { get; private set; }
         public IntermediaryCommand PrepareToCompleteEventCommand { get; private set; }
+        public IntermediaryCommand CancelCommand { get; private set; }
 
         private ICommand _finisherEventCommand;
         public ICommand FinisherEventCommand
@@ -150,6 +152,7 @@ namespace CrilieContactBook.ViewModels
         {
             EventsDbManagement.AddEvent(SelectedEvent);
             SelectedEvent = new Event();
+            SelectedEvent.Finished = false;
             NotEditable = true;
             EventList = EventsDbManagement.LoadEvents();
             FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
@@ -221,6 +224,14 @@ namespace CrilieContactBook.ViewModels
                 EventList = EventsDbManagement.LoadEvents();
                 FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
             }
+        }
+
+        //Cancel - reset current action
+        public void Cancel()
+        {
+            SelectedEvent = new Event();
+            NotEditable = true;
+            FinisherButtonsVisibility = Visibility.Hidden;
         }
     }
 

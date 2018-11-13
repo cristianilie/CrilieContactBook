@@ -121,6 +121,7 @@ namespace CrilieContactBook.ViewModels
             PrepareToEditTaskCommand = new IntermediaryCommand(PrepareToEditTask);
             PrepareToDeleteTaskCommand = new IntermediaryCommand(PrepareToDeleteTask);
             PrepareToCompleteTaskCommand = new IntermediaryCommand(PrepareMarkAsCompleted);
+            CancelCommand = new IntermediaryCommand(Cancel);
             FinisherButtonsVisibility = Visibility.Hidden;
             SelectedTaskFilter = TaskListFilter.Active;
         }
@@ -131,6 +132,7 @@ namespace CrilieContactBook.ViewModels
         public IntermediaryCommand PrepareToEditTaskCommand { get; private set; }
         public IntermediaryCommand PrepareToDeleteTaskCommand { get; private set; }
         public IntermediaryCommand PrepareToCompleteTaskCommand { get; private set; }
+        public IntermediaryCommand CancelCommand { get; private set; }
 
         private ICommand _finisherTaskCommand;
         public ICommand FinisherTaskCommand
@@ -235,6 +237,13 @@ namespace CrilieContactBook.ViewModels
             }
         }
 
+        //Cancel - reset current action
+        public void Cancel()
+        {
+            SelectedTask = new TaskToComplete();
+            NotEditable = true;
+            FinisherButtonsVisibility = Visibility.Hidden;
+        }
 
 
 
