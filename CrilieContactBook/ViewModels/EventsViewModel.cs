@@ -1,7 +1,8 @@
 ﻿using CrilieContactBook.Model;
 using CrilieContactBook.ViewModels.Commands;
-using CrilieContactBook.ViewModels.Enums;
+using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -9,7 +10,6 @@ namespace CrilieContactBook.ViewModels
 {
     public class EventsViewModel : ViewModelBase
     {
-
         //The list of events in the database
         private ObservableCollection<Event> eventList;
         public ObservableCollection<Event> EventList
@@ -33,8 +33,6 @@ namespace CrilieContactBook.ViewModels
                 RaisePropertyChanged();
             }
         }
-
-
 
         //Variable used to change the state of the SelectedEvent's fields and make them editable or read only
         private bool _notEditable = true;
@@ -82,6 +80,33 @@ namespace CrilieContactBook.ViewModels
             {
                 selectedEventFilter = value;
                 RaisePropertyChanged();
+
+                switch (SelectedEventFilter)
+                {
+                    case EventListFilter.Today:
+                        EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x => (x.ScheduledDate.Date == DateTime.Now.Date) && (x.Finished == false)));
+                        break;
+                    case EventListFilter.On_3_Days:
+                        EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x => (x.ScheduledDate.Date >= DateTime.Now.Date) && x.ScheduledDate.Date <= DateTime.Now.Date.AddDays(3) && (x.Finished == false)));
+                        break;
+                    case EventListFilter.On_7_Days:
+                        EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x => (x.ScheduledDate.Date >= DateTime.Now.Date) && x.ScheduledDate.Date <= DateTime.Now.Date.AddDays(7) && (x.Finished == false)));
+                        break;
+                    case EventListFilter.On_14_Days:
+                        EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x => (x.ScheduledDate.Date >= DateTime.Now.Date) && x.ScheduledDate.Date <= DateTime.Now.Date.AddDays(14) && (x.Finished == false)));
+                        break;
+                    case EventListFilter.On_30_Days:
+                        EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x => (x.ScheduledDate.Date >= DateTime.Now.Date) && x.ScheduledDate.Date <= DateTime.Now.Date.AddDays(30) && (x.Finished == false)));
+                        break;
+                    case EventListFilter.All_Active:
+                        EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x => (x.ScheduledDate.Date >= DateTime.Now.Date) && x.Finished == false));
+                        break;
+                    case EventListFilter.InactiveEvents:
+                        EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x => x.Finished == true));
+                        break;
+                    default:
+                        break;
+                }
 
                 //switch (SelectedEventFilter)
                 //{
@@ -140,7 +165,10 @@ namespace CrilieContactBook.ViewModels
         //Sets up the command and wires it up with the method to add a new event
         private void PrepareToAddEvent()
         {
-            SelectedEvent = new Event();
+            SelectedEvent = new Event()
+            {
+                ScheduledDate = DateTime.Now
+            };
             ButtonFinisherText = "Add Event";
             FinisherEventCommand = new IntermediaryCommand(AddNewEvent);
             NotEditable = false;
@@ -150,12 +178,18 @@ namespace CrilieContactBook.ViewModels
         //Add new event to database and resets the Selected Event and UI Elements bound to it
         public void AddNewEvent()
         {
-            EventsDbManagement.AddEvent(SelectedEvent);
-            SelectedEvent = new Event();
-            SelectedEvent.Finished = false;
+            if (CheckDate(SelectedEvent.ScheduledDate))
+            {
+                SelectedEvent.Finished = false;
+                EventsDbManagement.AddEvent(SelectedEvent);
+            }
+
+            SelectedEvent = new Event()
+                {
+                    ScheduledDate = DateTime.Now
+                };
             NotEditable = true;
             EventList = EventsDbManagement.LoadEvents();
-            FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
         }
 
 
@@ -173,12 +207,18 @@ namespace CrilieContactBook.ViewModels
         {
             if (SelectedEvent != null)
             {
-                EventsDbManagement.UpdateEvent(SelectedEvent);
-                SelectedEvent = new Event();
-                NotEditable = true;
-                EventList = EventsDbManagement.LoadEvents();
-                FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
+                if (CheckDate(SelectedEvent.ScheduledDate))
+                {
+                    EventsDbManagement.UpdateEvent(SelectedEvent);
 
+                    SelectedEvent = new Event()
+                    {
+                        ScheduledDate = DateTime.Now
+                    };
+                    NotEditable = true;
+                    EventList = EventsDbManagement.LoadEvents();
+                    FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
+                }
             }
         }
 
@@ -232,6 +272,25 @@ namespace CrilieContactBook.ViewModels
             SelectedEvent = new Event();
             NotEditable = true;
             FinisherButtonsVisibility = Visibility.Hidden;
+        }
+
+        //Checks if the current selected Date in the datetime picker is valid
+        private bool CheckDate(DateTime dateToCkeck)
+        {
+            if (ButtonFinisherText.Equals("Add Event") && dateToCkeck.Date >= DateTime.Now.Date)
+            {
+                FinisherButtonsVisibility = System.Windows.Visibility.Visible;
+                return true;
+            }
+
+            if (ButtonFinisherText.Equals("Edit Event") && dateToCkeck.Date >= DateTime.Now.Date && dateToCkeck.Date <= (DateTime.Now.AddYears(100).Date))
+            {
+                FinisherButtonsVisibility = System.Windows.Visibility.Visible;
+                return true;
+            }
+
+            FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
+            return false;
         }
     }
 

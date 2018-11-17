@@ -10,8 +10,8 @@ namespace CrilieContactBook.ViewModels
 
         public ContactsManagementState CurrentState { get; set; } = ContactsManagementState.Default;
 
+        //Current selected contact
         private Contact currentContact;
-
         public Contact CurrentContact
         {
             get { return currentContact; }
@@ -37,7 +37,7 @@ namespace CrilieContactBook.ViewModels
             }
             else
             {
-
+            
             }
 
 

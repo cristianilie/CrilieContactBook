@@ -37,11 +37,11 @@
         </Grid>
 
         <!--Selected Contact Info-->
-        <TextBox Style="{StaticResource ContactInfoEditStyles}" Padding="10 0 0 0" Text="{Binding CurrentContact.FullName,UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="1"/>
-        <TextBox Style="{StaticResource ContactInfoEditStyles}" Padding="10 0 0 0" Text="{Binding CurrentContact.Information, UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="2"/>
-        <TextBox Style="{StaticResource ContactInfoEditStyles}" Text="{Binding CurrentContact.Phone, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="4" Grid.RowSpan="1"/>
-        <TextBox Style="{StaticResource ContactInfoEditStyles}" Text="{Binding CurrentContact.Skype, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="5" Grid.RowSpan="1"/>
-        <TextBox Style="{StaticResource ContactInfoEditStyles}" Text="{Binding CurrentContact.WhatsApp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="6" Grid.RowSpan="1"/>
+        <TextBox Style="{StaticResource ContactInfoEditStyles}" Padding="10 0 0 0" Text="{Binding CurrentContact.FullName, Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="1"/>
+        <TextBox Style="{StaticResource ContactInfoEditStyles}" Padding="10 0 0 0" Text="{Binding CurrentContact.Information, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="2"/>
+        <TextBox Style="{StaticResource ContactInfoEditStyles}" Text="{Binding CurrentContact.Phone, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="4" Grid.RowSpan="1"/>
+        <TextBox Style="{StaticResource ContactInfoEditStyles}" Text="{Binding CurrentContact.Skype, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="5" Grid.RowSpan="1"/>
+        <TextBox Style="{StaticResource ContactInfoEditStyles}" Text="{Binding CurrentContact.WhatsApp, Mode=OneWayToSource,  UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="6" Grid.RowSpan="1"/>
 
         <!--Contact Method Buttons-->
         <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1"  Margin="5">

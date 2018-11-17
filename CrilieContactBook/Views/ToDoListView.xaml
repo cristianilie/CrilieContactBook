@@ -2,10 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:CrilieContactBook.Views"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vm="clr-namespace:CrilieContactBook.ViewModels"
-             xmlns:vm1="clr-namespace:CrilieContactBook"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="800"
              Background="DarkSeaGreen">
@@ -47,11 +45,11 @@
                 
                 <!--Task Info/Edit fields-->
                 <StackPanel>
-                    <TextBox IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Text="{Binding SelectedTask.Name}"/>
-                    <ScrollViewer Height="100" Margin="0 0 7 0"> 
-                        <TextBox IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Height="100" Width="440" TextWrapping="Wrap" Text="{Binding SelectedTask.Description}"/>
+                    <TextBox IsReadOnly="{Binding NotEditable, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Text="{Binding SelectedTask.Name}"/>
+                    <ScrollViewer Height="100" Margin="0 0 7 0">
+                        <TextBox IsReadOnly="{Binding NotEditable, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Height="100" Width="440" TextWrapping="Wrap" Text="{Binding SelectedTask.Description}"/>
                     </ScrollViewer>
-                    <DatePicker Style="{StaticResource deadlineDatePickerStyle}" Margin="5" SelectedDate="{Binding SelectedTask.Deadline}" />
+                    <DatePicker Style="{StaticResource deadlineDatePickerStyle}" Margin="5" SelectedDate="{Binding SelectedTask.Deadline, Mode=OneWayToSource}" />
                     <ComboBox IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={vm:EnumBindingSourceExtension {x:Type vm:TaskImportance}}}" SelectedItem="{Binding SelectedTaskImportance, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListComboBoxStyle}"/>
                 </StackPanel>
                 
