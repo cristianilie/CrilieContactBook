@@ -77,34 +77,18 @@
     <Compile Include="Model\TaskToCompleteDbManagement.cs" />
     <Compile Include="ViewModels\Commands\IntermediaryCommand.cs" />
     <Compile Include="ViewModels\Commands\ViewSwitchCommand.cs" />
-    <Compile Include="ViewModels\ContactDisplayInfoViewModel.cs" />
-    <Compile Include="ViewModels\ContactEditInfoViewModel.cs" />
     <Compile Include="ViewModels\ContactsViewModel.cs" />
     <Compile Include="ViewModels\EventsViewModel.cs" />
     <Compile Include="ViewModels\Helpers\ContactsManagementState.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ToDoListViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="Views\ContactDisplayInfoView.xaml.cs">
-      <DependentUpon>ContactDisplayInfoView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ContactEditInfoView.xaml.cs">
-      <DependentUpon>ContactEditInfoView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ContactsView.xaml.cs">
       <DependentUpon>ContactsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ToDoListView.xaml.cs">
       <DependentUpon>ToDoListView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\ContactDisplayInfoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ContactEditInfoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\EventsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -148,6 +132,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Resources\correct.png" />
+    <Resource Include="Resources\error.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

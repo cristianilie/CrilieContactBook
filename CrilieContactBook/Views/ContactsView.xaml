@@ -9,8 +9,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="410" d:DesignWidth="800" Background="RosyBrown">
     <DockPanel>
+        <!--Contact List-->
         <Grid DockPanel.Dock="Left" Width="230">
-            <ListView x:Name="lstvContacts" ItemsSource="{Binding ContactsList, UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" SelectedItem="{Binding SelectedContact,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+            <ListView ItemsSource="{Binding ContactsList}" SelectedItem="{Binding SelectedContact}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Style="{StaticResource ContactInfoDisplayStyles}" Text="{Binding FullName}" />
@@ -18,8 +19,95 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
+        
+        <!--Contact Details-->
         <Grid DockPanel.Dock="Right">
-            <ContentControl Content="{Binding SelectedContactView}"/>
+            <Grid Margin="14">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+
+                </Grid.RowDefinitions>
+
+                <!--Selected Contact Image-->
+                <Grid Margin="5"  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Grid.RowSpan="4" Background="DarkGoldenrod">
+                    <Image  Source="/CrilieContactBook;component/Resources/default-user.png" />
+
+                </Grid>
+
+                <!--Selected Contact Info-->
+                <TextBox Style="{StaticResource ContactInfoEditStyles}" IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" Padding="10 0 0 0" Text="{Binding SelectedContact.FullName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="1"/>
+                <TextBox Style="{StaticResource ContactInfoEditStyles}" IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" Height="110" MaxHeight="110" Padding="10 0 0 0" Text="{Binding SelectedContact.Information, UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="2"/>
+                <TextBox Style="{StaticResource ContactInfoEditStyles}" IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" Text="{Binding SelectedContact.Phone, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="4" Grid.RowSpan="1"/>
+                <TextBox Style="{StaticResource ContactInfoEditStyles}" IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" Text="{Binding SelectedContact.Skype, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="5" Grid.RowSpan="1"/>
+                <TextBox Style="{StaticResource ContactInfoEditStyles}" IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" Text="{Binding SelectedContact.WhatsApp, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="6" Grid.RowSpan="1"/>
+
+                <!--Contact Method Buttons-->
+                <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1"  Margin="5">
+                    <Image Source="/CrilieContactBook;component/Resources/phone.png"/>
+                </Button>
+                <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="1"  Margin="5">
+                    <Image Source="/CrilieContactBook;component/Resources/skype-logo.png"/>
+                </Button>
+                <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="1"  Margin="5">
+                    <Image Source="/CrilieContactBook;component/Resources/whatsapp.png"/>
+                </Button>
+
+                <!--Selected Contact Add Update Delete-->
+                <StackPanel Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="4" Orientation="Horizontal" VerticalAlignment="Center" Visibility="{Binding CRUDButtonsVisibility}">
+                                        
+                    <!--Add Contact-->
+                    <Button Margin="5" Command="{Binding PrepareToAddNewContactCommand}">
+                        <Image Source="/CrilieContactBook;component/Resources/add-user.png"/>
+                    </Button>
+                    <!--Edit Contact-->
+
+                    <Button Margin="5" Command="{Binding PrepareToEditContactCommand}">
+                        <Image Source="/CrilieContactBook;component/Resources/settings.png"/>
+                    </Button>
+                    
+                    <!--Delete Contact-->
+                    <Button Margin="5" Command="{Binding PrepareToDeleteContactCommand}">
+                        <Image Source="/CrilieContactBook;component/Resources/remove-user.png"/>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="4" Orientation="Horizontal" VerticalAlignment="Center" Visibility="{Binding ConfirmActionVisibility}">
+
+                    <!--Confirm action Button-->
+                    <StackPanel Orientation="Horizontal">
+                        <Button Margin="5" Command="{Binding FinisherContactCommand}">
+                            <Image Source="/CrilieContactBook;component/Resources/correct.png"/>                        
+                        </Button>
+                        <TextBlock Style="{StaticResource ContactInfoDisplayStyles}" Text="{Binding ButtonFinisherText}" Foreground="{StaticResource MaximumBlueGreen}" />
+                    </StackPanel>
+                    
+                    <!--Cancel action Button-->
+                    <StackPanel Orientation="Horizontal">
+                        <Button  Margin="5" Command="{Binding CancelCommand}">
+                            <Image Source="/CrilieContactBook;component/Resources/error.png"/>
+                        </Button>
+                        <TextBlock Style="{StaticResource ContactInfoDisplayStyles}" Text="Cancel" Foreground="Tomato"/>
+                    </StackPanel>
+
+                </StackPanel>
+            </Grid>
         </Grid>
     </DockPanel>
 </UserControl>

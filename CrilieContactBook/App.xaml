@@ -15,14 +15,6 @@
             <views:ContactsView/>
         </DataTemplate>
 
-        <DataTemplate  DataType="{x:Type viewModels:ContactDisplayInfoViewModel}">
-            <views:ContactDisplayInfoView/>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewModels:ContactEditInfoViewModel}">
-            <views:ContactEditInfoView/>
-        </DataTemplate>
-
         <DataTemplate DataType="{x:Type viewModels:EventsViewModel}">
             <views:EventsView/>
         </DataTemplate>
@@ -78,11 +70,12 @@
         </Style>
 
         <Style x:Key="ContactInfoEditStyles" TargetType="TextBox">
-            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontSize" Value="18"/>
             <Setter Property="Foreground" Value="#FF3A3A36"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="4"/>
-            <Setter Property="Height" Value="44"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="2" />
 
         </Style>
 

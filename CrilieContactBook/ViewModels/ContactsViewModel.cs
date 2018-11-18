@@ -1,23 +1,13 @@
 ﻿using CrilieContactBook.Model;
+using CrilieContactBook.ViewModels.Commands;
 using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace CrilieContactBook.ViewModels
 {
     public class ContactsViewModel : ViewModelBase
     {
-        //The child view displayed - default ContactDisplayInfoView
-        //ContactDisplayInfoView - only displays information about a selected contact
-        private object selectedContactView;
-        public object SelectedContactView
-        {
-            get { return selectedContactView; }
-            set
-            {
-                selectedContactView = value;
-                RaisePropertyChanged();
-            }
-        }
-
         //The list of contacts in the database
         private ObservableCollection<Contact> contactsList;
         public ObservableCollection<Contact> ContactsList
@@ -42,34 +32,146 @@ namespace CrilieContactBook.ViewModels
             }
         }
 
+
+
+        //Variable used to change the state of the SelectedContact's fields and make them editable or read only
+        private bool _notEditable = true;
+        public bool NotEditable
+        {
+            get => _notEditable;
+            set
+            {
+                _notEditable = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
+        //The text that appears on the button that fisnishes the CRUD commands on tasks
+        private string buttonFinisherText;
+        public string ButtonFinisherText
+        {
+            get { return buttonFinisherText; }
+            set
+            {
+                buttonFinisherText = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        //Displays the Confirmation buttons to finish a CRUD action
+        private Visibility confirmActionVisibility;
+        public Visibility ConfirmActionVisibility
+        {
+            get { return confirmActionVisibility; }
+            set
+            {
+                confirmActionVisibility = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        //Displays the Contact CRUD buttons that we use to add/edit/delete a contact in the database
+        private Visibility _CRUDButtonsVisibility;
+        public Visibility CRUDButtonsVisibility
+        {
+            get { return _CRUDButtonsVisibility; }
+            set
+            {
+                _CRUDButtonsVisibility = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
         //Constructor
         public ContactsViewModel()
         {
-            ContactDisplayInfoVM = new ContactDisplayInfoViewModel(this);
-            ContactEditInfoVM = new ContactEditInfoViewModel(this, ContactsManagementState.Default);
-            SelectedContactView = ContactDisplayInfoVM;
-
             ContactsList = ContactDbManagement.LoadContacts();
+            PrepareToAddNewContactCommand = new IntermediaryCommand(PrepareToAddContact);
+            PrepareToEditContactCommand = new IntermediaryCommand(PrepareToEditContact);
+            PrepareToDeleteContactCommand = new IntermediaryCommand(PrepareToDeleteContact);
+            CancelCommand = new IntermediaryCommand(Cancel);
+            CRUDButtonsVisibility = Visibility.Visible;
+            ConfirmActionVisibility = System.Windows.Visibility.Hidden;
         }
 
-        //Load Contact listfrom our  SQLITE database
-        private void LoadContacts()
+
+        //CRUD COMMANDS
+        public IntermediaryCommand PrepareToAddNewContactCommand { get; private set; }
+        public IntermediaryCommand PrepareToEditContactCommand { get; private set; }
+        public IntermediaryCommand PrepareToDeleteContactCommand { get; private set; }
+        public IntermediaryCommand CancelCommand { get; private set; }
+
+        private ICommand _finisherContactCommand;
+        public ICommand FinisherContactCommand
         {
-            ContactsList = ContactDbManagement.LoadContacts();
+            get => _finisherContactCommand;
+            set
+            {
+                _finisherContactCommand = value;
+                RaisePropertyChanged();
+            }
         }
+
+
+        //Sets up the command and wires it up with the method to add a new Contact
+        private void PrepareToAddContact()
+        {
+            SelectedContact = new Contact();
+            ButtonFinisherText = "Add Contact";
+            FinisherContactCommand = new IntermediaryCommand(AddContact);
+            NotEditable = false;
+            CRUDButtonsVisibility = Visibility.Hidden;
+            ConfirmActionVisibility = System.Windows.Visibility.Visible;
+        }
+
+        //Sets up the command and wires it up with the method to edit/update the selected Contact
+        private void PrepareToEditContact()
+        {
+            ButtonFinisherText = "Edit Contact";
+            FinisherContactCommand = new IntermediaryCommand(EditContact);
+            NotEditable = false;
+            CRUDButtonsVisibility = Visibility.Hidden;
+            ConfirmActionVisibility = System.Windows.Visibility.Visible;
+        }
+
+        //Sets up the command and wires it up with the method to delete the Selected Contact
+        private void PrepareToDeleteContact()
+        {
+            ButtonFinisherText = "Delete Contact";
+            FinisherContactCommand = new IntermediaryCommand(DeleteContact);
+            NotEditable = true;
+            CRUDButtonsVisibility = Visibility.Hidden;
+            ConfirmActionVisibility = System.Windows.Visibility.Visible;
+        }
+                     
+                             
 
         //Adds a new contact to the database
-        public void AddContact(Contact _contact)
+        public void AddContact()
         {
-            ContactDbManagement.AddContact(_contact);
-            LoadContacts();
+            if (SelectedContact != null)
+            {
+                ContactDbManagement.AddContact(SelectedContact);
+                SelectedContact = new Contact();
+                NotEditable = true;
+                ConfirmActionVisibility = System.Windows.Visibility.Hidden;
+                ContactsList = ContactDbManagement.LoadContacts();
+            }
         }
 
         //Edits a contact's details
-        public void EditContact(Contact _contact)
+        public void EditContact()
         {
-            ContactDbManagement.UpdateContact(_contact);
-            LoadContacts();
+            if (SelectedContact != null)
+            {
+                ContactDbManagement.UpdateContact(SelectedContact);
+                SelectedContact = new Contact();
+                NotEditable = true;
+                ConfirmActionVisibility = System.Windows.Visibility.Hidden;
+                ContactsList = ContactDbManagement.LoadContacts();
+            }
         }
 
         //Deletes a contact from the database
@@ -78,51 +180,20 @@ namespace CrilieContactBook.ViewModels
             if (SelectedContact != null)
             {
                 ContactDbManagement.DeleteContact(SelectedContact);
-                LoadContacts();
+                SelectedContact = new Contact();
+                NotEditable = true;
+                ConfirmActionVisibility = System.Windows.Visibility.Hidden;
+                ContactsList = ContactDbManagement.LoadContacts();
             }
         }
 
-
-        //Contacts Child ViewVodel - ContactDisplayInfoViewModel
-        private ContactDisplayInfoViewModel contactDisplayInfoVM;
-        public ContactDisplayInfoViewModel ContactDisplayInfoVM
+        //Cancel - reset current action
+        public void Cancel()
         {
-            get { return contactDisplayInfoVM; }
-            set
-            {
-                contactDisplayInfoVM = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        //Contacts Child ViewVodel - ContactDisplayInfoViewModel
-        private ContactEditInfoViewModel contactEditInfoVM;
-        public ContactEditInfoViewModel ContactEditInfoVM
-        {
-            get { return contactEditInfoVM; }
-            set
-            {
-                contactEditInfoVM = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        //Switch Child View to ContactDisplayInfoView
-        public void SwitchToContactDisplayView()
-        {
-            SelectedContactView = ContactDisplayInfoVM;
-        }
-
-        //Switch Child View to ContactEditInfoView to edit the Current/SelectedContact
-        public void SwitchToContactEditView()
-        {
-            SelectedContactView = new ContactEditInfoViewModel(this, ContactsManagementState.Update);
-        }
-
-        //Switch Child View to ContactEditInfoView to add a new Contact
-        public void SwitchToAddNewContact()
-        {
-            SelectedContactView = new ContactEditInfoViewModel(this, ContactsManagementState.Create);
+            SelectedContact = new Contact();
+            NotEditable = true;
+            ConfirmActionVisibility = Visibility.Hidden;
+            CRUDButtonsVisibility = Visibility.Visible;
         }
     }
 }
