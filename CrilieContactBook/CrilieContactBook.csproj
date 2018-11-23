@@ -47,6 +47,7 @@
     <Reference Include="System.Data.SQLite, Version=1.0.109.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.109.2\lib\net46\System.Data.SQLite.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -69,6 +70,7 @@
     <Compile Include="Model\ContactDbManagement.cs" />
     <Compile Include="Model\Event.cs" />
     <Compile Include="Model\EventsDbManagement.cs" />
+    <Compile Include="ViewModels\Converters\ByteArrayToBitmapImageConverter.cs" />
     <Compile Include="ViewModels\Enums\EnumBindingSourceExtension.cs" />
     <Compile Include="ViewModels\Enums\EventListFilter.cs" />
     <Compile Include="ViewModels\Enums\TaskImportance.cs" />
@@ -79,7 +81,6 @@
     <Compile Include="ViewModels\Commands\ViewSwitchCommand.cs" />
     <Compile Include="ViewModels\ContactsViewModel.cs" />
     <Compile Include="ViewModels\EventsViewModel.cs" />
-    <Compile Include="ViewModels\Helpers\ContactsManagementState.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ToDoListViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -132,6 +133,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Resources\identification.png" />
+    <Resource Include="Resources\name.png" />
     <Resource Include="Resources\correct.png" />
     <Resource Include="Resources\error.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -174,7 +177,9 @@
   <ItemGroup>
     <Resource Include="Resources\return-button.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ViewModels\Helpers\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -21,10 +21,33 @@ namespace CrilieContactBook.Views
     /// </summary>
     public partial class ContactsView : UserControl
     {
+        public static BindingExpression bindingExp;
+
         public ContactsView()
         {
             InitializeComponent();
             DataContext = new ContactsViewModel();
+        }
+
+        private void BtnFinisher_Click(object sender, RoutedEventArgs e)
+        {
+            BindingExpression binding = contactFullNameTxtBox.GetBindingExpression(TextBox.TextProperty);
+            binding.UpdateSource();
+
+            binding = contactInfoTxtBox.GetBindingExpression(TextBox.TextProperty);
+            binding.UpdateSource();
+
+            binding = contactFullNameTxtBox.GetBindingExpression(TextBox.TextProperty);
+            binding.UpdateSource();
+
+            binding = contactPhoneTxtBox.GetBindingExpression(TextBox.TextProperty);
+            binding.UpdateSource();
+
+            binding = contactSkypeTxtBox.GetBindingExpression(TextBox.TextProperty);
+            binding.UpdateSource();
+
+            binding = contactWhatsAppTxtBox.GetBindingExpression(TextBox.TextProperty);
+            binding.UpdateSource();
         }
     }
 }

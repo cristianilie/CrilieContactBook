@@ -63,6 +63,17 @@
 
         
         <!--UI Element Styles-->
+
+        <Style TargetType="Button" x:Key="selectViewButtonsStyle">
+            <Setter Property="Background" Value="#FFBDBAC7"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#FF20BF6B"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="#FF0FB9B1"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        
         <Style x:Key="ContactInfoDisplayStyles" TargetType="TextBlock">
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="Foreground" Value="#FF3A3A36"/>
@@ -155,6 +166,23 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
+        <Style TargetType="Button" x:Key="contactSideButtonsStyle">
+            <Setter Property="Background" Value="#FF4392D4"/>
+            <Setter Property="Foreground" Value="Orange"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Orange"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="contactActionButtonsStyle">
+            <Setter Property="Background" Value="#FF7E96AA"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="#FFCBE813"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
         <Style TargetType="TextBox" x:Key="eventTitleTextBoxStyle">
             <Setter Property="Height" Value="26"/>
             <Setter Property="FontSize" Value="16"/>
@@ -178,6 +206,13 @@
             <Setter Property="Foreground" Value="#FFF78D0E"/>
         </Style>
 
+        <Style TargetType="TextBlock" x:Key="contactListItemTextBlockStyle">
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="Width" Value="212"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="#FF2BCBBA"/>
+
+        </Style>
         
         <Style TargetType="DatePicker" x:Key="eventSchedulerPickerStyle">
             <Setter Property="Height" Value="30"/>

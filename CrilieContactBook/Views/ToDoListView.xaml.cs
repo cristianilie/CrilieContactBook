@@ -26,5 +26,17 @@ namespace CrilieContactBook.Views
             InitializeComponent();
             DataContext = new ToDoListViewModel();
         }
+
+        private void btnTaskFinisher_Click(object sender, RoutedEventArgs e)
+        {
+            BindingExpression binding = taskTitleTxtBx.GetBindingExpression(TextBox.TextProperty);
+            binding.UpdateSource();
+
+            binding = taskDescriptionTxtBx.GetBindingExpression(TextBox.TextProperty);
+            binding.UpdateSource();
+
+            binding = taskImportanceCbx.GetBindingExpression(ComboBox.SelectedItemProperty);
+            binding.UpdateSource();
+        }
     }
 }

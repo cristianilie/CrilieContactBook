@@ -27,5 +27,13 @@ namespace CrilieContactBook.Views
             DataContext = new EventsViewModel();
         }
 
+        private void btnEventFinisher_Click(object sender, RoutedEventArgs e)
+        {
+            BindingExpression binding = eventTitleTxtBx.GetBindingExpression(TextBox.TextProperty);
+            binding.UpdateSource();
+
+            binding = eventDescriptionTxtBx.GetBindingExpression(TextBox.TextProperty);
+            binding.UpdateSource();
+        }
     }
 }

@@ -21,10 +21,10 @@
             
             <!--Task List-->
             <Grid DockPanel.Dock="Bottom" Width="280">
-                <ListView x:Name="lstvTasks" ItemsSource="{Binding TaskList, UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" SelectedItem="{Binding SelectedTask,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+                <ListView x:Name="lstvTasks" ItemsSource="{Binding TaskList, UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" SelectedItem="{Binding SelectedTask,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Background="{StaticResource LightBlueGreyGradient}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Style="{StaticResource ContactInfoDisplayStyles}" Text="{Binding Name}" />
+                            <TextBlock Style="{StaticResource ContactInfoDisplayStyles}" Text="{Binding Name}" Foreground="{StaticResource MaximumBlueGreen}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -45,18 +45,18 @@
                 
                 <!--Task Info/Edit fields-->
                 <StackPanel>
-                    <TextBox IsReadOnly="{Binding NotEditable, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Text="{Binding SelectedTask.Name}"/>
+                    <TextBox x:Name="taskTitleTxtBx" IsReadOnly="{Binding NotEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Text="{Binding SelectedTask.Name, UpdateSourceTrigger=Explicit}"/>
                     <ScrollViewer Height="100" Margin="0 0 7 0">
-                        <TextBox IsReadOnly="{Binding NotEditable, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Height="100" Width="440" TextWrapping="Wrap" Text="{Binding SelectedTask.Description}"/>
+                        <TextBox x:Name="taskDescriptionTxtBx" IsReadOnly="{Binding NotEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Height="100" Width="440" TextWrapping="Wrap" Text="{Binding SelectedTask.Description, UpdateSourceTrigger=Explicit}"/>
                     </ScrollViewer>
-                    <DatePicker Style="{StaticResource deadlineDatePickerStyle}" Margin="5" SelectedDate="{Binding SelectedTask.Deadline, Mode=OneWayToSource}" />
-                    <ComboBox IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={vm:EnumBindingSourceExtension {x:Type vm:TaskImportance}}}" SelectedItem="{Binding SelectedTaskImportance, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListComboBoxStyle}"/>
+                    <DatePicker x:Name="taskDateDtPicker" Style="{StaticResource deadlineDatePickerStyle}" Margin="5" SelectedDate="{Binding SelectedTask.Deadline, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
+                    <ComboBox x:Name="taskImportanceCbx" IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={vm:EnumBindingSourceExtension {x:Type vm:TaskImportance}}}" SelectedItem="{Binding SelectedTaskImportance, UpdateSourceTrigger=Explicit}" Style="{StaticResource taskListComboBoxStyle}"/>
                 </StackPanel>
                 
                 <!--Task "Statistics"-->
                 <StackPanel Margin="5" Visibility="{Binding FinisherButtonsVisibility, UpdateSourceTrigger=PropertyChanged}">
                     <StackPanel  Margin="0 4" Orientation="Horizontal">
-                        <Button Content="{Binding ButtonFinisherText}" Style="{StaticResource tasksButtonsStyle}" Command="{Binding FinisherTaskCommand}" />
+                        <Button x:Name="btnTaskFinisher" Click="btnTaskFinisher_Click" Content="{Binding ButtonFinisherText}" Style="{StaticResource tasksButtonsStyle}" Command="{Binding FinisherTaskCommand}" />
                         <Button Style="{StaticResource tasksButtonsStyle}" Content="Cancel"  Command="{Binding CancelCommand}"/>
                     </StackPanel>
                    

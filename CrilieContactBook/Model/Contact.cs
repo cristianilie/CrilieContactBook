@@ -9,8 +9,6 @@ namespace CrilieContactBook.Model
 
         public string FullName { get; set; }
 
-        //public Image ContactImage { get; set; }
-
         public string Information { get; set; }
 
         public string Phone { get; set; }

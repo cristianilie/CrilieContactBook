@@ -23,15 +23,15 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
-                <Button Content="Contacts" Command="{Binding ContactsViewSwitchCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Style="{StaticResource selectViewButtonsStyle}" Content="Contacts" Command="{Binding ContactsViewSwitchCommand, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
 
             <Grid Grid.Column="1">
-                <Button Content="Events" Command="{Binding EventsViewSwitchCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Style="{StaticResource selectViewButtonsStyle}" Content="Events" Command="{Binding EventsViewSwitchCommand, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
 
             <Grid Grid.Column="2">
-                <Button Content="To Do List" Command="{Binding ToDoListViewSwitchCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Style="{StaticResource selectViewButtonsStyle}" Content="To Do List" Command="{Binding ToDoListViewSwitchCommand, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
 
         </Grid>

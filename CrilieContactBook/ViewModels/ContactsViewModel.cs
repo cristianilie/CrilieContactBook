@@ -1,6 +1,7 @@
 ﻿using CrilieContactBook.Model;
 using CrilieContactBook.ViewModels.Commands;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
 
@@ -19,7 +20,7 @@ namespace CrilieContactBook.ViewModels
                 RaisePropertyChanged();
             }
         }
-        
+
         //The selected contact from the Contacts listview
         private Contact selectedContact;
         public Contact SelectedContact
@@ -31,8 +32,6 @@ namespace CrilieContactBook.ViewModels
                 RaisePropertyChanged();
             }
         }
-
-
 
         //Variable used to change the state of the SelectedContact's fields and make them editable or read only
         private bool _notEditable = true;
@@ -94,6 +93,7 @@ namespace CrilieContactBook.ViewModels
             CancelCommand = new IntermediaryCommand(Cancel);
             CRUDButtonsVisibility = Visibility.Visible;
             ConfirmActionVisibility = System.Windows.Visibility.Hidden;
+            ButtonFinisherText = "";
         }
 
 
@@ -113,6 +113,7 @@ namespace CrilieContactBook.ViewModels
                 RaisePropertyChanged();
             }
         }
+
 
 
         //Sets up the command and wires it up with the method to add a new Contact
@@ -145,8 +146,8 @@ namespace CrilieContactBook.ViewModels
             CRUDButtonsVisibility = Visibility.Hidden;
             ConfirmActionVisibility = System.Windows.Visibility.Visible;
         }
-                     
-                             
+
+
 
         //Adds a new contact to the database
         public void AddContact()
@@ -157,6 +158,7 @@ namespace CrilieContactBook.ViewModels
                 SelectedContact = new Contact();
                 NotEditable = true;
                 ConfirmActionVisibility = System.Windows.Visibility.Hidden;
+                CRUDButtonsVisibility = System.Windows.Visibility.Visible;
                 ContactsList = ContactDbManagement.LoadContacts();
             }
         }
@@ -166,11 +168,15 @@ namespace CrilieContactBook.ViewModels
         {
             if (SelectedContact != null)
             {
+
                 ContactDbManagement.UpdateContact(SelectedContact);
                 SelectedContact = new Contact();
                 NotEditable = true;
                 ConfirmActionVisibility = System.Windows.Visibility.Hidden;
+                CRUDButtonsVisibility = System.Windows.Visibility.Visible;
+
                 ContactsList = ContactDbManagement.LoadContacts();
+
             }
         }
 
@@ -183,6 +189,7 @@ namespace CrilieContactBook.ViewModels
                 SelectedContact = new Contact();
                 NotEditable = true;
                 ConfirmActionVisibility = System.Windows.Visibility.Hidden;
+                CRUDButtonsVisibility = System.Windows.Visibility.Visible;
                 ContactsList = ContactDbManagement.LoadContacts();
             }
         }

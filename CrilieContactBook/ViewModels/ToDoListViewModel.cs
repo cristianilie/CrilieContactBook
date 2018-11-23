@@ -165,6 +165,7 @@ namespace CrilieContactBook.ViewModels
             SelectedTask = new TaskToComplete();
             NotEditable = true;
             TaskList = TaskToCompleteDbManagement.LoadTasks();
+            SelectedTaskFilter = TaskListFilter.Active;
             FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
         }
 
@@ -188,6 +189,7 @@ namespace CrilieContactBook.ViewModels
                 SelectedTask = new TaskToComplete();
                 NotEditable = true;
                 TaskList = TaskToCompleteDbManagement.LoadTasks();
+                SelectedTaskFilter = TaskListFilter.Active;
                 FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
 
             }
@@ -210,6 +212,7 @@ namespace CrilieContactBook.ViewModels
                 TaskToCompleteDbManagement.DeleteTask(SelectedTask);
                 SelectedTask = new TaskToComplete();
                 TaskList = TaskToCompleteDbManagement.LoadTasks();
+                SelectedTaskFilter = TaskListFilter.Active;
                 FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
             }
         }
@@ -233,6 +236,7 @@ namespace CrilieContactBook.ViewModels
                 TaskToCompleteDbManagement.UpdateTaskToComplete(SelectedTask);
                 SelectedTask = new TaskToComplete();
                 TaskList = TaskToCompleteDbManagement.LoadTasks();
+                SelectedTaskFilter = TaskListFilter.Active;
                 FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
             }
         }
