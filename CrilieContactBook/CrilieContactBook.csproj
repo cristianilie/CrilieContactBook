@@ -70,7 +70,7 @@
     <Compile Include="Model\ContactDbManagement.cs" />
     <Compile Include="Model\Event.cs" />
     <Compile Include="Model\EventsDbManagement.cs" />
-    <Compile Include="ViewModels\Converters\ByteArrayToBitmapImageConverter.cs" />
+    <Compile Include="ViewModels\Converters\EnumDescriptionTypeConverter.cs" />
     <Compile Include="ViewModels\Enums\EnumBindingSourceExtension.cs" />
     <Compile Include="ViewModels\Enums\EventListFilter.cs" />
     <Compile Include="ViewModels\Enums\TaskImportance.cs" />
