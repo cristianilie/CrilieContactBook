@@ -29,7 +29,7 @@ namespace CrilieContactBook.Model
         {
             using (IDbConnection con = new SQLiteConnection(LoadConnectiobString()))
             {
-                con.Execute("Insert into Event(ScheduledDate, Title, Description) values(@ScheduledDate,@Title, @Description)", _event);
+                con.Execute("Insert into Event(ScheduledDate, Title, Description, Finished) values(@ScheduledDate,@Title, @Description,@Finished)", _event);
             }
         }
 
@@ -38,7 +38,7 @@ namespace CrilieContactBook.Model
         {
             using (IDbConnection con = new SQLiteConnection(LoadConnectiobString()))
             {
-                con.Execute("Update Event Set ScheduledDate=@ScheduledDate, Title=@Title, Description=@Description Where Id=@Id", _event);
+                con.Execute("Update Event Set ScheduledDate=@ScheduledDate, Title=@Title, Description=@Description, Finished=@Finished Where Id=@Id", _event);
             }
         }
 

@@ -81,7 +81,7 @@ namespace CrilieContactBook.ViewModels
                 selectedEventFilter = value;
                 RaisePropertyChanged();
 
-                switch (SelectedEventFilter)
+                switch (selectedEventFilter)
                 {
                     case EventListFilter.Today:
                         EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x => (x.ScheduledDate.Date == DateTime.Now.Date) && (x.Finished == false)));
@@ -102,29 +102,12 @@ namespace CrilieContactBook.ViewModels
                         EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x => (x.ScheduledDate.Date >= DateTime.Now.Date) && x.Finished == false));
                         break;
                     case EventListFilter.InactiveEvents:
-                        EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x => x.Finished == true));
+                        EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x=>(x.Finished == true)/* || x.ScheduledDate.Date < DateTime.Now.Date)*/));
                         break;
                     default:
                         break;
                 }
 
-                //switch (SelectedEventFilter)
-                //{
-                //    case EventListFilter.All:
-                //        EventList = TaskToCompleteDbManagement.LoadTasks();
-                //        break;
-                //    case EventListFilter.Active:
-                //        TaskList = new ObservableCollection<TaskToComplete>(TaskToCompleteDbManagement.LoadTasks().Where(x => ((DateTime)x.Deadline.Date >= DateTime.Now) && ((bool)x.Completed == false)));
-                //        break;
-                //    case TaskListFilter.Completed:
-                //        TaskList = new ObservableCollection<TaskToComplete>(TaskToCompleteDbManagement.LoadTasks().Where(x => (bool)x.Completed == true));
-                //        break;
-                //    case TaskListFilter.Failed:
-                //        TaskList = new ObservableCollection<TaskToComplete>(TaskToCompleteDbManagement.LoadTasks().Where(x => ((DateTime)x.Deadline.Date < DateTime.Now) && (bool)x.Completed == false));
-                //        break;
-                //    default:
-                //        break;
-                //}
             }
         }
 
@@ -132,7 +115,7 @@ namespace CrilieContactBook.ViewModels
         //Default Constructor
         public EventsViewModel()
         {
-            EventList = EventsDbManagement.LoadEvents();
+            SelectedEventFilter = EventListFilter.All_Active;
             PrepareToAddNewEventCommand = new IntermediaryCommand(PrepareToAddEvent);
             PrepareToEditEventCommand = new IntermediaryCommand(PrepareToEditEvent);
             PrepareToDeleteEventCommand = new IntermediaryCommand(PrepareToDeleteEvent);
@@ -190,6 +173,7 @@ namespace CrilieContactBook.ViewModels
                 };
             NotEditable = true;
             EventList = EventsDbManagement.LoadEvents();
+            SelectedEventFilter = EventListFilter.All_Active;
         }
 
 
@@ -217,6 +201,7 @@ namespace CrilieContactBook.ViewModels
                     };
                     NotEditable = true;
                     EventList = EventsDbManagement.LoadEvents();
+                    SelectedEventFilter = EventListFilter.All_Active;
                     FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
                 }
             }
@@ -239,6 +224,7 @@ namespace CrilieContactBook.ViewModels
                 EventsDbManagement.DeleteEvent(SelectedEvent);
                 SelectedEvent = new Event();
                 EventList = EventsDbManagement.LoadEvents();
+                SelectedEventFilter = EventListFilter.All_Active;
                 FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
             }
         }

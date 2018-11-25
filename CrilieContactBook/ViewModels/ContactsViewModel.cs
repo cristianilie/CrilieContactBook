@@ -140,7 +140,7 @@ namespace CrilieContactBook.ViewModels
         //Sets up the command and wires it up with the method to delete the Selected Contact
         private void PrepareToDeleteContact()
         {
-            ButtonFinisherText = "Delete Contact";
+            ButtonFinisherText = "Delete";
             FinisherContactCommand = new IntermediaryCommand(DeleteContact);
             NotEditable = true;
             CRUDButtonsVisibility = Visibility.Hidden;

@@ -97,13 +97,13 @@ namespace CrilieContactBook.ViewModels
                         TaskList = TaskToCompleteDbManagement.LoadTasks();
                         break;
                     case TaskListFilter.Active:
-                        TaskList = new ObservableCollection<TaskToComplete>(TaskToCompleteDbManagement.LoadTasks().Where(x => ((DateTime)x.Deadline.Date >= DateTime.Now) && ((bool)x.Completed == false)));
+                        TaskList = new ObservableCollection<TaskToComplete>(TaskToCompleteDbManagement.LoadTasks().Where(x => ((DateTime)x.Deadline.Date >= DateTime.Now.Date) && ((bool)x.Completed == false)));
                         break;
                     case TaskListFilter.Completed:
                         TaskList = new ObservableCollection<TaskToComplete>(TaskToCompleteDbManagement.LoadTasks().Where(x => (bool)x.Completed == true));
                         break;
                     case TaskListFilter.Failed:
-                        TaskList = new ObservableCollection<TaskToComplete>(TaskToCompleteDbManagement.LoadTasks().Where(x => ((DateTime)x.Deadline.Date < DateTime.Now) && (bool)x.Completed == false));
+                        TaskList = new ObservableCollection<TaskToComplete>(TaskToCompleteDbManagement.LoadTasks().Where(x => ((DateTime)x.Deadline.Date < DateTime.Now.Date) && (bool)x.Completed == false));
                         break;
                     default:
                         break;
@@ -124,6 +124,7 @@ namespace CrilieContactBook.ViewModels
             CancelCommand = new IntermediaryCommand(Cancel);
             FinisherButtonsVisibility = Visibility.Hidden;
             SelectedTaskFilter = TaskListFilter.Active;
+
         }
 
 
@@ -156,16 +157,30 @@ namespace CrilieContactBook.ViewModels
             FinisherTaskCommand = new IntermediaryCommand(AddNewTask);
             NotEditable = false;
             FinisherButtonsVisibility = System.Windows.Visibility.Visible;
+            SelectedTask = new TaskToComplete()
+            {
+                Deadline = DateTime.Now
+            };
         }
 
         //Add new Task to database and resets the Selected task and UI Elements bound to it
         public void AddNewTask()
         {
-            TaskToCompleteDbManagement.AddTaskToComplete(SelectedTask);
-            SelectedTask = new TaskToComplete();
-            NotEditable = true;
+            if (CheckDate(SelectedTask.Deadline))
+            {
+                SelectedTask.Completed = false;
+                TaskToCompleteDbManagement.AddTaskToComplete(SelectedTask);
+
+            }
+
+            SelectedTask = new TaskToComplete()
+            {
+                Deadline = DateTime.Now
+            };
+
             TaskList = TaskToCompleteDbManagement.LoadTasks();
             SelectedTaskFilter = TaskListFilter.Active;
+            NotEditable = true;
             FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
         }
 
@@ -249,7 +264,24 @@ namespace CrilieContactBook.ViewModels
             FinisherButtonsVisibility = Visibility.Hidden;
         }
 
+        //Checks if the current selected Date in the datetime picker is valid
+        private bool CheckDate(DateTime dateToCkeck)
+        {
+            if (ButtonFinisherText.Equals("Add Task") && dateToCkeck.Date >= DateTime.Now.Date)
+            {
+                FinisherButtonsVisibility = System.Windows.Visibility.Visible;
+                return true;
+            }
 
+            if (ButtonFinisherText.Equals("Edit Task") && dateToCkeck.Date >= DateTime.Now.Date && dateToCkeck.Date <= (DateTime.Now.AddYears(100).Date))
+            {
+                FinisherButtonsVisibility = System.Windows.Visibility.Visible;
+                return true;
+            }
+
+            FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
+            return false;
+        }
 
     }
 }

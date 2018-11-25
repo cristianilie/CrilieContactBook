@@ -49,7 +49,7 @@
                     <ScrollViewer Height="100" Margin="0 0 7 0">
                         <TextBox x:Name="taskDescriptionTxtBx" IsReadOnly="{Binding NotEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Height="100" Width="440" TextWrapping="Wrap" Text="{Binding SelectedTask.Description, UpdateSourceTrigger=Explicit}"/>
                     </ScrollViewer>
-                    <DatePicker x:Name="taskDateDtPicker" Style="{StaticResource deadlineDatePickerStyle}" Margin="5" SelectedDate="{Binding SelectedTask.Deadline, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
+                    <DatePicker x:Name="taskDateDtPicker" Style="{StaticResource deadlineDatePickerStyle}" Margin="5" SelectedDate="{Binding SelectedTask.Deadline, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <ComboBox x:Name="taskImportanceCbx" IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={vm:EnumBindingSourceExtension {x:Type vm:TaskImportance}}}" SelectedItem="{Binding SelectedTaskImportance, UpdateSourceTrigger=Explicit}" Style="{StaticResource taskListComboBoxStyle}"/>
                 </StackPanel>
                 
