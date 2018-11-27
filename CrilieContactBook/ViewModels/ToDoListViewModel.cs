@@ -10,6 +10,10 @@ namespace CrilieContactBook.ViewModels
 {
     public class ToDoListViewModel : ViewModelBase
     {
+        //CRUD TaskToComplete database table queries
+        private string addToDb = "Insert into TaskToComplete(Name, Description, Importance, Deadline, Completed) values(@Name,@Description, @Importance, @Deadline, @Completed)";
+        private string editToDb = "Update TaskToComplete Set Name=@Name, Description=@Description, Importance=@Importance, Deadline=@Deadline, Completed=@Completed Where Id=@Id";
+
         //The list of tasks in the database
         private ObservableCollection<TaskToComplete> taskList;
         public ObservableCollection<TaskToComplete> TaskList
@@ -94,16 +98,16 @@ namespace CrilieContactBook.ViewModels
                 switch (SelectedTaskFilter)
                 {
                     case TaskListFilter.All:
-                        TaskList = TaskToCompleteDbManagement.LoadTasks();
+                        TaskList = DbHandler<TaskToComplete>.LoadElements();
                         break;
                     case TaskListFilter.Active:
-                        TaskList = new ObservableCollection<TaskToComplete>(TaskToCompleteDbManagement.LoadTasks().Where(x => ((DateTime)x.Deadline.Date >= DateTime.Now.Date) && ((bool)x.Completed == false)));
+                        TaskList = new ObservableCollection<TaskToComplete>(DbHandler<TaskToComplete>.LoadElements().Where(x => ((DateTime)x.Deadline.Date >= DateTime.Now.Date) && ((bool)x.Completed == false)));
                         break;
                     case TaskListFilter.Completed:
-                        TaskList = new ObservableCollection<TaskToComplete>(TaskToCompleteDbManagement.LoadTasks().Where(x => (bool)x.Completed == true));
+                        TaskList = new ObservableCollection<TaskToComplete>(DbHandler<TaskToComplete>.LoadElements().Where(x => (bool)x.Completed == true));
                         break;
                     case TaskListFilter.Failed:
-                        TaskList = new ObservableCollection<TaskToComplete>(TaskToCompleteDbManagement.LoadTasks().Where(x => ((DateTime)x.Deadline.Date < DateTime.Now.Date) && (bool)x.Completed == false));
+                        TaskList = new ObservableCollection<TaskToComplete>(DbHandler<TaskToComplete>.LoadElements().Where(x => ((DateTime)x.Deadline.Date < DateTime.Now.Date) && (bool)x.Completed == false));
                         break;
                     default:
                         break;
@@ -112,11 +116,10 @@ namespace CrilieContactBook.ViewModels
         }
 
 
-
         //Default constructor
         public ToDoListViewModel()
         {
-            TaskList = TaskToCompleteDbManagement.LoadTasks();
+            TaskList = DbHandler<TaskToComplete>.LoadElements();
             PrepareToAddNewTaskCommand = new IntermediaryCommand(PrepareToAddTask);
             PrepareToEditTaskCommand = new IntermediaryCommand(PrepareToEditTask);
             PrepareToDeleteTaskCommand = new IntermediaryCommand(PrepareToDeleteTask);
@@ -124,7 +127,6 @@ namespace CrilieContactBook.ViewModels
             CancelCommand = new IntermediaryCommand(Cancel);
             FinisherButtonsVisibility = Visibility.Hidden;
             SelectedTaskFilter = TaskListFilter.Active;
-
         }
 
 
@@ -169,7 +171,7 @@ namespace CrilieContactBook.ViewModels
             if (CheckDate(SelectedTask.Deadline))
             {
                 SelectedTask.Completed = false;
-                TaskToCompleteDbManagement.AddTaskToComplete(SelectedTask);
+                DbHandler<TaskToComplete>.AddItem(SelectedTask,addToDb);
 
             }
 
@@ -178,7 +180,7 @@ namespace CrilieContactBook.ViewModels
                 Deadline = DateTime.Now
             };
 
-            TaskList = TaskToCompleteDbManagement.LoadTasks();
+            TaskList = DbHandler<TaskToComplete>.LoadElements();
             SelectedTaskFilter = TaskListFilter.Active;
             NotEditable = true;
             FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
@@ -200,10 +202,10 @@ namespace CrilieContactBook.ViewModels
         {
             if (SelectedTask != null)
             {
-                TaskToCompleteDbManagement.UpdateTaskToComplete(SelectedTask);
+                DbHandler<TaskToComplete>.UpdateItem(SelectedTask, editToDb);
                 SelectedTask = new TaskToComplete();
                 NotEditable = true;
-                TaskList = TaskToCompleteDbManagement.LoadTasks();
+                TaskList = DbHandler<TaskToComplete>.LoadElements();
                 SelectedTaskFilter = TaskListFilter.Active;
                 FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
 
@@ -224,9 +226,9 @@ namespace CrilieContactBook.ViewModels
         {
             if (SelectedTask != null)
             {
-                TaskToCompleteDbManagement.DeleteTask(SelectedTask);
+                DbHandler<TaskToComplete>.DeleteItem(SelectedTask);
                 SelectedTask = new TaskToComplete();
-                TaskList = TaskToCompleteDbManagement.LoadTasks();
+                TaskList = DbHandler<TaskToComplete>.LoadElements();
                 SelectedTaskFilter = TaskListFilter.Active;
                 FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
             }
@@ -248,9 +250,9 @@ namespace CrilieContactBook.ViewModels
             if (SelectedTask != null)
             {
                 SelectedTask.Completed = true;
-                TaskToCompleteDbManagement.UpdateTaskToComplete(SelectedTask);
+                DbHandler<TaskToComplete>.UpdateItem(SelectedTask,editToDb);
                 SelectedTask = new TaskToComplete();
-                TaskList = TaskToCompleteDbManagement.LoadTasks();
+                TaskList = DbHandler<TaskToComplete>.LoadElements();
                 SelectedTaskFilter = TaskListFilter.Active;
                 FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
             }

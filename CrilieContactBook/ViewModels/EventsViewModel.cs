@@ -10,6 +10,10 @@ namespace CrilieContactBook.ViewModels
 {
     public class EventsViewModel : ViewModelBase
     {
+        //CRUD Event database table queries
+        private string addToDb = "Insert into Event(ScheduledDate, Title, Description, Finished) values(@ScheduledDate,@Title, @Description,@Finished)";
+        private string editToDb = "Update Event Set ScheduledDate=@ScheduledDate, Title=@Title, Description=@Description, Finished=@Finished Where Id=@Id";
+
         //The list of events in the database
         private ObservableCollection<Event> eventList;
         public ObservableCollection<Event> EventList
@@ -84,25 +88,25 @@ namespace CrilieContactBook.ViewModels
                 switch (selectedEventFilter)
                 {
                     case EventListFilter.Today:
-                        EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x => (x.ScheduledDate.Date == DateTime.Now.Date) && (x.Finished == false)));
+                        EventList = new ObservableCollection<Event>(DbHandler<Event>.LoadElements().Where(x => (x.ScheduledDate.Date == DateTime.Now.Date) && (x.Finished == false)));
                         break;
                     case EventListFilter.On_3_Days:
-                        EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x => (x.ScheduledDate.Date >= DateTime.Now.Date) && x.ScheduledDate.Date <= DateTime.Now.Date.AddDays(3) && (x.Finished == false)));
+                        EventList = new ObservableCollection<Event>(DbHandler<Event>.LoadElements().Where(x => (x.ScheduledDate.Date >= DateTime.Now.Date) && x.ScheduledDate.Date <= DateTime.Now.Date.AddDays(3) && (x.Finished == false)));
                         break;
                     case EventListFilter.On_7_Days:
-                        EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x => (x.ScheduledDate.Date >= DateTime.Now.Date) && x.ScheduledDate.Date <= DateTime.Now.Date.AddDays(7) && (x.Finished == false)));
+                        EventList = new ObservableCollection<Event>(DbHandler<Event>.LoadElements().Where(x => (x.ScheduledDate.Date >= DateTime.Now.Date) && x.ScheduledDate.Date <= DateTime.Now.Date.AddDays(7) && (x.Finished == false)));
                         break;
                     case EventListFilter.On_14_Days:
-                        EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x => (x.ScheduledDate.Date >= DateTime.Now.Date) && x.ScheduledDate.Date <= DateTime.Now.Date.AddDays(14) && (x.Finished == false)));
+                        EventList = new ObservableCollection<Event>(DbHandler<Event>.LoadElements().Where(x => (x.ScheduledDate.Date >= DateTime.Now.Date) && x.ScheduledDate.Date <= DateTime.Now.Date.AddDays(14) && (x.Finished == false)));
                         break;
                     case EventListFilter.On_30_Days:
-                        EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x => (x.ScheduledDate.Date >= DateTime.Now.Date) && x.ScheduledDate.Date <= DateTime.Now.Date.AddDays(30) && (x.Finished == false)));
+                        EventList = new ObservableCollection<Event>(DbHandler<Event>.LoadElements().Where(x => (x.ScheduledDate.Date >= DateTime.Now.Date) && x.ScheduledDate.Date <= DateTime.Now.Date.AddDays(30) && (x.Finished == false)));
                         break;
                     case EventListFilter.All_Active:
-                        EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x => (x.ScheduledDate.Date >= DateTime.Now.Date) && x.Finished == false));
+                        EventList = new ObservableCollection<Event>(DbHandler<Event>.LoadElements().Where(x => (x.ScheduledDate.Date >= DateTime.Now.Date) && x.Finished == false));
                         break;
                     case EventListFilter.InactiveEvents:
-                        EventList = new ObservableCollection<Event>(EventsDbManagement.LoadEvents().Where(x=>(x.Finished == true)/* || x.ScheduledDate.Date < DateTime.Now.Date)*/));
+                        EventList = new ObservableCollection<Event>(DbHandler<Event>.LoadElements().Where(x=>(x.Finished == true)/* || x.ScheduledDate.Date < DateTime.Now.Date)*/));
                         break;
                     default:
                         break;
@@ -164,7 +168,7 @@ namespace CrilieContactBook.ViewModels
             if (CheckDate(SelectedEvent.ScheduledDate))
             {
                 SelectedEvent.Finished = false;
-                EventsDbManagement.AddEvent(SelectedEvent);
+                DbHandler<Event>.AddItem(SelectedEvent,addToDb);
             }
 
             SelectedEvent = new Event()
@@ -172,7 +176,7 @@ namespace CrilieContactBook.ViewModels
                     ScheduledDate = DateTime.Now
                 };
             NotEditable = true;
-            EventList = EventsDbManagement.LoadEvents();
+            EventList = DbHandler<Event>.LoadElements();
             SelectedEventFilter = EventListFilter.All_Active;
         }
 
@@ -193,14 +197,14 @@ namespace CrilieContactBook.ViewModels
             {
                 if (CheckDate(SelectedEvent.ScheduledDate))
                 {
-                    EventsDbManagement.UpdateEvent(SelectedEvent);
+                    DbHandler<Event>.UpdateItem(SelectedEvent,editToDb);
 
                     SelectedEvent = new Event()
                     {
                         ScheduledDate = DateTime.Now
                     };
                     NotEditable = true;
-                    EventList = EventsDbManagement.LoadEvents();
+                    EventList = DbHandler<Event>.LoadElements();
                     SelectedEventFilter = EventListFilter.All_Active;
                     FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
                 }
@@ -221,9 +225,9 @@ namespace CrilieContactBook.ViewModels
         {
             if (SelectedEvent != null)
             {
-                EventsDbManagement.DeleteEvent(SelectedEvent);
+                DbHandler<Event>.DeleteItem(SelectedEvent);
                 SelectedEvent = new Event();
-                EventList = EventsDbManagement.LoadEvents();
+                EventList = DbHandler<Event>.LoadElements();
                 SelectedEventFilter = EventListFilter.All_Active;
                 FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
             }
@@ -245,9 +249,9 @@ namespace CrilieContactBook.ViewModels
             if (SelectedEvent != null)
             {
                 SelectedEvent.Finished = true;
-                EventsDbManagement.UpdateEvent(SelectedEvent);
+                DbHandler<Event>.UpdateItem(SelectedEvent,editToDb);
                 SelectedEvent = new Event();
-                EventList = EventsDbManagement.LoadEvents();
+                EventList = DbHandler<Event>.LoadElements();
                 FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
             }
         }

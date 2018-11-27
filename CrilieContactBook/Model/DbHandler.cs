@@ -11,43 +11,48 @@ using System.Threading.Tasks;
 
 namespace CrilieContactBook.Model
 {
-    public class EventsDbManagement
+    public class DbHandler<T>
     {
-        //Loads the TaskToComplete database and returns it as an observable collection
-        public static ObservableCollection<Event> LoadEvents()
+        //Type of generic type T
+        public static Type typeParameterType = typeof(T);
+
+
+        //Loads the T database table and returns it as an observable collection
+        public static ObservableCollection<T> LoadElements()
         {
+
             using (IDbConnection con = new SQLiteConnection(LoadConnectiobString()))
             {
-                var result = con.Query<Event>("select * from Event", new DynamicParameters());
+                var result = con.Query<T>($"select * from {typeParameterType.Name.ToString()}", new DynamicParameters());
 
-                return new ObservableCollection<Event>(result as List<Event>);
+                return new ObservableCollection<T>(result as List<T>);
             }
         }
 
-        //Adds a new Event to the Database
-        public static void AddEvent(Event _event)
+        //Adds a new "Entity" to the asociated Database table
+        public static void AddItem(T _t, string query)
         {
             using (IDbConnection con = new SQLiteConnection(LoadConnectiobString()))
             {
-                con.Execute("Insert into Event(ScheduledDate, Title, Description, Finished) values(@ScheduledDate,@Title, @Description,@Finished)", _event);
+                con.Execute(query, _t);
             }
         }
 
-        //Updates an Event's details in the database
-        public static void UpdateEvent(Event _event)
+        //Updates an "Entity"'s details in the asociated Database table
+        public static void UpdateItem(T _t, string query)
         {
             using (IDbConnection con = new SQLiteConnection(LoadConnectiobString()))
             {
-                con.Execute("Update Event Set ScheduledDate=@ScheduledDate, Title=@Title, Description=@Description, Finished=@Finished Where Id=@Id", _event);
+                con.Execute(query, _t);
             }
         }
 
-        //Deletes an Event from the database
-        public static void DeleteEvent(Event _event)
+        //Deletes an "Entity" from the asociated Database table
+        public static void DeleteItem(T _t)
         {
             using (IDbConnection con = new SQLiteConnection(LoadConnectiobString()))
             {
-                con.Execute("Delete from Event Where Id=@Id", _event);
+                con.Execute($"Delete from {typeParameterType.Name.ToString()} Where Id=@Id", _t);
             }
         }
 
@@ -56,6 +61,5 @@ namespace CrilieContactBook.Model
         {
             return ConfigurationManager.ConnectionStrings[_id].ConnectionString;
         }
-
     }
 }

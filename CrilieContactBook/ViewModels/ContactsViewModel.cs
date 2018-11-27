@@ -9,6 +9,10 @@ namespace CrilieContactBook.ViewModels
 {
     public class ContactsViewModel : ViewModelBase
     {
+        //CRUD Contact database table queries
+        private string addToDb = "Insert into Contact(FullName, Information, Phone, Skype, WhatsApp) values(@FullName, @Information, @Phone, @Skype, @WhatsApp)";
+        private string editToDb = "Update Contact Set FullName=@FullName, Information=@Information, Phone=@Phone, Skype=@Skype, WhatsApp=@WhatsApp Where Id=@Id";
+
         //The list of contacts in the database
         private ObservableCollection<Contact> contactsList;
         public ObservableCollection<Contact> ContactsList
@@ -86,7 +90,7 @@ namespace CrilieContactBook.ViewModels
         //Constructor
         public ContactsViewModel()
         {
-            ContactsList = ContactDbManagement.LoadContacts();
+            ContactsList = DbHandler<Contact>.LoadElements();
             PrepareToAddNewContactCommand = new IntermediaryCommand(PrepareToAddContact);
             PrepareToEditContactCommand = new IntermediaryCommand(PrepareToEditContact);
             PrepareToDeleteContactCommand = new IntermediaryCommand(PrepareToDeleteContact);
@@ -146,20 +150,19 @@ namespace CrilieContactBook.ViewModels
             CRUDButtonsVisibility = Visibility.Hidden;
             ConfirmActionVisibility = System.Windows.Visibility.Visible;
         }
-
-
+        
 
         //Adds a new contact to the database
         public void AddContact()
         {
             if (SelectedContact != null)
             {
-                ContactDbManagement.AddContact(SelectedContact);
+                DbHandler<Contact>.AddItem(SelectedContact,addToDb);
                 SelectedContact = new Contact();
                 NotEditable = true;
                 ConfirmActionVisibility = System.Windows.Visibility.Hidden;
                 CRUDButtonsVisibility = System.Windows.Visibility.Visible;
-                ContactsList = ContactDbManagement.LoadContacts();
+                ContactsList = DbHandler<Contact>.LoadElements();
             }
         }
 
@@ -168,15 +171,13 @@ namespace CrilieContactBook.ViewModels
         {
             if (SelectedContact != null)
             {
-
-                ContactDbManagement.UpdateContact(SelectedContact);
+                DbHandler<Contact>.UpdateItem(SelectedContact,editToDb);
                 SelectedContact = new Contact();
                 NotEditable = true;
                 ConfirmActionVisibility = System.Windows.Visibility.Hidden;
                 CRUDButtonsVisibility = System.Windows.Visibility.Visible;
 
-                ContactsList = ContactDbManagement.LoadContacts();
-
+                ContactsList = DbHandler<Contact>.LoadElements();
             }
         }
 
@@ -185,12 +186,12 @@ namespace CrilieContactBook.ViewModels
         {
             if (SelectedContact != null)
             {
-                ContactDbManagement.DeleteContact(SelectedContact);
+                DbHandler<Contact>.DeleteItem(SelectedContact);
                 SelectedContact = new Contact();
                 NotEditable = true;
                 ConfirmActionVisibility = System.Windows.Visibility.Hidden;
                 CRUDButtonsVisibility = System.Windows.Visibility.Visible;
-                ContactsList = ContactDbManagement.LoadContacts();
+                ContactsList = DbHandler<Contact>.LoadElements();
             }
         }
 
