@@ -8,106 +8,53 @@ using System.Windows.Input;
 
 namespace CrilieContactBook.ViewModels
 {
-    public class ToDoListViewModel : ViewModelBase
+    public class ToDoListViewModel : VM_Base<TaskToComplete>
     {
-        //CRUD TaskToComplete database table queries
-        private string addToDb = "Insert into TaskToComplete(Name, Description, Importance, Deadline, Completed) values(@Name,@Description, @Importance, @Deadline, @Completed)";
-        private string editToDb = "Update TaskToComplete Set Name=@Name, Description=@Description, Importance=@Importance, Deadline=@Deadline, Completed=@Completed Where Id=@Id";
-
-        //The list of tasks in the database
-        private ObservableCollection<TaskToComplete> taskList;
-        public ObservableCollection<TaskToComplete> TaskList
-        {
-            get { return taskList; }
+        public override TaskToComplete SelectedItem
+        { get => base.SelectedItem;
             set
             {
-                taskList = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        //The selected task from the TaskList listview
-        private TaskToComplete selectedTask;
-        public TaskToComplete SelectedTask
-        {
-            get { return selectedTask; }
-            set
-            {
-                selectedTask = value;
-                RaisePropertyChanged();
+                base.SelectedItem = value;
+                if(SelectedItem != null)
+                    SelectedItemImportance = (TaskImportance)SelectedItem.Importance;
             }
         }
 
         //The Importance of the Selected Task
-        private TaskImportance selectedTaskImportance;
-        public TaskImportance SelectedTaskImportance
+        private TaskImportance selectedItemImportance;
+        public TaskImportance SelectedItemImportance
         {
-            get => selectedTaskImportance;
+            get => selectedItemImportance;
             set
             {
-                selectedTaskImportance = value;
+                selectedItemImportance = value;
                 RaisePropertyChanged();
             }
         }
 
-        //Variable used to change the state of the Selected Task's fields and make them editable or read only
-        private bool _notEditable = true;
-        public bool NotEditable
-        {
-            get => _notEditable;
-            set
-            {
-                _notEditable = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        //The text that appears on the button that fisnishes the CRUD commands on tasks
-        private string buttonFinisherText;
-        public string ButtonFinisherText
-        {
-            get { return buttonFinisherText; }
-            set
-            {
-                buttonFinisherText = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        //Displays the Task CRUD "finisher" buttons if we show our intent to execute any operation on the database
-        private Visibility finisherButtonsVisibility;
-        public Visibility FinisherButtonsVisibility
-        {
-            get { return finisherButtonsVisibility; }
-            set
-            {
-                finisherButtonsVisibility = value;
-                RaisePropertyChanged();
-            }
-        }
 
         //Task List Filter - filters the tasklist by TaskListFilters enum and displays All/Active/Completed/Failed tasks
-        private TaskListFilter selectedTaskFilter;
-        public TaskListFilter SelectedTaskFilter
+        private TaskListFilter selectedItemFilter;
+        public TaskListFilter SelectedItemFilter
         {
-            get { return selectedTaskFilter; }
+            get { return selectedItemFilter; }
             set {
-                selectedTaskFilter = value;
+                selectedItemFilter = value;
                 RaisePropertyChanged();
 
-                switch (SelectedTaskFilter)
+                switch (SelectedItemFilter)
                 {
                     case TaskListFilter.All:
-                        TaskList = DbHandler<TaskToComplete>.LoadElements();
+                        ItemsList = DbHandler<TaskToComplete>.LoadElements();
                         break;
                     case TaskListFilter.Active:
-                        TaskList = new ObservableCollection<TaskToComplete>(DbHandler<TaskToComplete>.LoadElements().Where(x => ((DateTime)x.Deadline.Date >= DateTime.Now.Date) && ((bool)x.Completed == false)));
+                        ItemsList = new ObservableCollection<TaskToComplete>(DbHandler<TaskToComplete>.LoadElements().Where(x => ((DateTime)x.Deadline.Date >= DateTime.Now.Date) && ((bool)x.Completed == false)));
                         break;
                     case TaskListFilter.Completed:
-                        TaskList = new ObservableCollection<TaskToComplete>(DbHandler<TaskToComplete>.LoadElements().Where(x => (bool)x.Completed == true));
+                        ItemsList = new ObservableCollection<TaskToComplete>(DbHandler<TaskToComplete>.LoadElements().Where(x => (bool)x.Completed == true));
                         break;
                     case TaskListFilter.Failed:
-                        TaskList = new ObservableCollection<TaskToComplete>(DbHandler<TaskToComplete>.LoadElements().Where(x => ((DateTime)x.Deadline.Date < DateTime.Now.Date) && (bool)x.Completed == false));
+                        ItemsList = new ObservableCollection<TaskToComplete>(DbHandler<TaskToComplete>.LoadElements().Where(x => ((DateTime)x.Deadline.Date < DateTime.Now.Date) && (bool)x.Completed == false));
                         break;
                     default:
                         break;
@@ -119,169 +66,149 @@ namespace CrilieContactBook.ViewModels
         //Default constructor
         public ToDoListViewModel()
         {
-            TaskList = DbHandler<TaskToComplete>.LoadElements();
-            PrepareToAddNewTaskCommand = new IntermediaryCommand(PrepareToAddTask);
-            PrepareToEditTaskCommand = new IntermediaryCommand(PrepareToEditTask);
-            PrepareToDeleteTaskCommand = new IntermediaryCommand(PrepareToDeleteTask);
-            PrepareToCompleteTaskCommand = new IntermediaryCommand(PrepareMarkAsCompleted);
+            ItemsList = DbHandler<TaskToComplete>.LoadElements();
+            PrepareToAddNewItemCommand = new IntermediaryCommand(PrepareToAddItem);
+            PrepareToEditItemCommand = new IntermediaryCommand(PrepareToEditItem);
+            PrepareToDeleteItemCommand = new IntermediaryCommand(PrepareToDeleteItem);
+            PrepareToFinishActionCommand = new IntermediaryCommand(PrepareMarkAsCompleted);
             CancelCommand = new IntermediaryCommand(Cancel);
-            FinisherButtonsVisibility = Visibility.Hidden;
-            SelectedTaskFilter = TaskListFilter.Active;
+            ConfirmActionVisibility = Visibility.Hidden;
+            SelectedItemFilter = TaskListFilter.Active;
+            SelectedItemImportance = TaskImportance.Average;
         }
 
 
-        //CRUD COMMANDS
-        public IntermediaryCommand PrepareToAddNewTaskCommand { get; private set; }
-        public IntermediaryCommand PrepareToEditTaskCommand { get; private set; }
-        public IntermediaryCommand PrepareToDeleteTaskCommand { get; private set; }
-        public IntermediaryCommand PrepareToCompleteTaskCommand { get; private set; }
-        public IntermediaryCommand CancelCommand { get; private set; }
-
-        private ICommand _finisherTaskCommand;
-        public ICommand FinisherTaskCommand
+        //Sets up the command and wires it up with the method to add a new item to the TaskToComplete db table
+        public override void PrepareToAddItem()
         {
-            get => _finisherTaskCommand;
-            set
-            {
-                _finisherTaskCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-
-
-
-        //Sets up the command and wires it up with the method to add a new Task
-        private void PrepareToAddTask()
-        {
-            SelectedTask = new TaskToComplete();
-            SelectedTask.Importance = 3;
+            SelectedItem = new TaskToComplete();
+            //SelectedItem.Importance = 3;
             ButtonFinisherText = "Add Task";
-            FinisherTaskCommand = new IntermediaryCommand(AddNewTask);
+            FinisherCommand = new IntermediaryCommand(AddItem);
             NotEditable = false;
-            FinisherButtonsVisibility = System.Windows.Visibility.Visible;
-            SelectedTask = new TaskToComplete()
+            ConfirmActionVisibility = System.Windows.Visibility.Visible;
+            SelectedItem = new TaskToComplete()
             {
                 Deadline = DateTime.Now
             };
         }
 
-        //Add new Task to database and resets the Selected task and UI Elements bound to it
-        public void AddNewTask()
+        //Adds a new item to the TaskToComplete db table
+        public override void AddItem()
         {
-            if (CheckDate(SelectedTask.Deadline))
+            if (CheckDate(SelectedItem.Deadline))
             {
-                SelectedTask.Completed = false;
-                DbHandler<TaskToComplete>.AddItem(SelectedTask,addToDb);
-
+                SelectedItem.Importance = (int)SelectedItemImportance;
+                SelectedItem.Completed = false;
+                DbHandler<TaskToComplete>.AddItem(SelectedItem);
             }
 
-            SelectedTask = new TaskToComplete()
+            SelectedItem = new TaskToComplete()
             {
                 Deadline = DateTime.Now
             };
 
-            TaskList = DbHandler<TaskToComplete>.LoadElements();
-            SelectedTaskFilter = TaskListFilter.Active;
+            ItemsList = DbHandler<TaskToComplete>.LoadElements();
+            SelectedItemFilter = TaskListFilter.Active;
             NotEditable = true;
-            FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
+            ConfirmActionVisibility = System.Windows.Visibility.Hidden;
         }
 
-
-        //Sets up the command and wires it up with the method to edit/update the Selected Task
-        private void PrepareToEditTask()
+        //Sets up the command and wires it up with the method to edit/update the Selected Item
+        public override void PrepareToEditItem()
         {
             ButtonFinisherText = "Edit Task";
-            FinisherTaskCommand = new IntermediaryCommand(EditTask);
+            FinisherCommand = new IntermediaryCommand(EditItem);
             NotEditable = false;
-            FinisherButtonsVisibility = System.Windows.Visibility.Visible;
-
+            ConfirmActionVisibility = System.Windows.Visibility.Visible;
         }
 
-        //Edits the Selected Task in the database and resets the UI elements bound to it
-        public void EditTask()
+        //Edits/updates the Selected Item in the TaskToComplete db table
+        public override void EditItem()
         {
-            if (SelectedTask != null)
+            if (SelectedItem != null)
             {
-                DbHandler<TaskToComplete>.UpdateItem(SelectedTask, editToDb);
-                SelectedTask = new TaskToComplete();
+                if (SelectedItem.Importance != (int)SelectedItemImportance)
+                    SelectedItem.Importance = (int)SelectedItemImportance;
+
+                DbHandler<TaskToComplete>.UpdateItem(SelectedItem);
+                SelectedItem = new TaskToComplete();
                 NotEditable = true;
-                TaskList = DbHandler<TaskToComplete>.LoadElements();
-                SelectedTaskFilter = TaskListFilter.Active;
-                FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
-
+                ItemsList = DbHandler<TaskToComplete>.LoadElements();
+                SelectedItemFilter = TaskListFilter.Active;
+                ConfirmActionVisibility = System.Windows.Visibility.Hidden;
             }
         }
 
-        //Sets up the command and wires it up with the method to delete the Selected Task
-        private void PrepareToDeleteTask()
+        //Sets up the command and wires it up with the method to delete the Selected Item
+        public override void PrepareToDeleteItem()
         {
-            ButtonFinisherText = "Delete Task";
-            FinisherTaskCommand = new IntermediaryCommand(DeleteTask);
-            NotEditable = true;
-            FinisherButtonsVisibility = System.Windows.Visibility.Visible;
-        }
-
-        //Deletes the Selected Task from the database and resets the UI elements bound to it
-        public void DeleteTask()
-        {
-            if (SelectedTask != null)
+            if (SelectedItem != null)
             {
-                DbHandler<TaskToComplete>.DeleteItem(SelectedTask);
-                SelectedTask = new TaskToComplete();
-                TaskList = DbHandler<TaskToComplete>.LoadElements();
-                SelectedTaskFilter = TaskListFilter.Active;
-                FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
+                ButtonFinisherText = "Delete Task";
+                FinisherCommand = new IntermediaryCommand(DeleteItem);
+                NotEditable = true;
+                ConfirmActionVisibility = System.Windows.Visibility.Visible;
+            }
+        }
+
+        //Deletes the Selected Item(the selected TaskToComplete) from the TaskToComplete db table
+        public override void DeleteItem()
+        {
+            if (SelectedItem != null)
+            {
+                DbHandler<TaskToComplete>.DeleteItem(SelectedItem);
+                SelectedItem = new TaskToComplete();
+                ItemsList = DbHandler<TaskToComplete>.LoadElements();
+                SelectedItemFilter = TaskListFilter.Active;
+                ConfirmActionVisibility = System.Windows.Visibility.Hidden;
             }
         }
 
 
-        //Sets up the command and wires it up with the method to delete the Selected Task
+        //Sets up the command and wires it up with the method to "mark as completed" the Selected Item
         private void PrepareMarkAsCompleted()
         {
             ButtonFinisherText = "Completed!";
-            FinisherTaskCommand = new IntermediaryCommand(MarkAsCompleted);
+            FinisherCommand = new IntermediaryCommand(MarkAsCompleted);
             NotEditable = true;
-            FinisherButtonsVisibility = System.Windows.Visibility.Visible;
+            ConfirmActionVisibility = System.Windows.Visibility.Visible;
         }
 
-        //Marks as completed the Selected Task from the database, and updates it and resets the UI elements bound to it
+        //Marks as completed the Selected Item(TaskToComplete), updates it in the database and resets the UI elements bound to it
         public void MarkAsCompleted()
         {
-            if (SelectedTask != null)
+            if (SelectedItem != null)
             {
-                SelectedTask.Completed = true;
-                DbHandler<TaskToComplete>.UpdateItem(SelectedTask,editToDb);
-                SelectedTask = new TaskToComplete();
-                TaskList = DbHandler<TaskToComplete>.LoadElements();
-                SelectedTaskFilter = TaskListFilter.Active;
-                FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
+                SelectedItem.Completed = true;
+                DbHandler<TaskToComplete>.UpdateItem(SelectedItem);
+                SelectedItem = new TaskToComplete();
+                ItemsList = DbHandler<TaskToComplete>.LoadElements();
+                SelectedItemFilter = TaskListFilter.Active;
+                ConfirmActionVisibility = System.Windows.Visibility.Hidden;
             }
         }
 
-        //Cancel - reset current action
-        public void Cancel()
-        {
-            SelectedTask = new TaskToComplete();
-            NotEditable = true;
-            FinisherButtonsVisibility = Visibility.Hidden;
-        }
+
 
         //Checks if the current selected Date in the datetime picker is valid
         private bool CheckDate(DateTime dateToCkeck)
         {
             if (ButtonFinisherText.Equals("Add Task") && dateToCkeck.Date >= DateTime.Now.Date)
             {
-                FinisherButtonsVisibility = System.Windows.Visibility.Visible;
+                ConfirmActionVisibility = System.Windows.Visibility.Visible;
                 return true;
             }
 
-            if (ButtonFinisherText.Equals("Edit Task") && dateToCkeck.Date >= DateTime.Now.Date && dateToCkeck.Date <= (DateTime.Now.AddYears(100).Date))
-            {
-                FinisherButtonsVisibility = System.Windows.Visibility.Visible;
-                return true;
-            }
+            if (ButtonFinisherText.Equals("Edit Task") 
+                && dateToCkeck.Date >= DateTime.Now.Date 
+                && dateToCkeck.Date <= (DateTime.Now.AddYears(100).Date))
+                {
+                    ConfirmActionVisibility = System.Windows.Visibility.Visible;
+                    return true;
+                } 
 
-            FinisherButtonsVisibility = System.Windows.Visibility.Hidden;
+            ConfirmActionVisibility = System.Windows.Visibility.Hidden;
             return false;
         }
 

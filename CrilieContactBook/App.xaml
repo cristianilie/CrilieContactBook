@@ -85,18 +85,9 @@
             <Setter Property="Foreground" Value="#FF3A3A36"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="2"/>
-            <Setter Property="Height" Value="38"/>
             <Setter Property="Padding" Value="2" />
-
-        </Style>
-
-        <Style TargetType="TextBox" x:Key="editContactTextBoxStyle">
-            <Setter Property="Width" Value="330"/>
-            <Setter Property="Height" Value="38"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Background" Value="#FF131313"/>
-            <Setter Property="Foreground" Value="#FF26DE81"/>
-            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Width" Value="500"/>
         </Style>
 
         <Style TargetType="TextBox" x:Key="taskListTextBoxStyle">
@@ -167,6 +158,8 @@
         </Style>
 
         <Style TargetType="Button" x:Key="contactSideButtonsStyle">
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="34"/>
             <Setter Property="Background" Value="#FF4392D4"/>
             <Setter Property="Foreground" Value="Orange"/>
             <Setter Property="BorderThickness" Value="1"/>
@@ -176,6 +169,8 @@
         </Style>
 
         <Style TargetType="Button" x:Key="contactActionButtonsStyle">
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="34"/>
             <Setter Property="Background" Value="#FF7E96AA"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="BorderBrush" Value="#FFCBE813"/>

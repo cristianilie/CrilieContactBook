@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using CrilieContactBook.ViewModels;
+using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CrilieContactBook.Model
 {
-    public class DbHandler<T>
+    public class DbHandler<T> where T : I_DB_Query
     {
         //Type of generic type T
         public static Type typeParameterType = typeof(T);
@@ -30,20 +31,20 @@ namespace CrilieContactBook.Model
         }
 
         //Adds a new "Entity" to the asociated Database table
-        public static void AddItem(T _t, string query)
+        public static void AddItem(T _t)
         {
             using (IDbConnection con = new SQLiteConnection(LoadConnectiobString()))
             {
-                con.Execute(query, _t);
+                con.Execute(_t.AddQuery, _t);
             }
         }
 
         //Updates an "Entity"'s details in the asociated Database table
-        public static void UpdateItem(T _t, string query)
+        public static void UpdateItem(T _t)
         {
             using (IDbConnection con = new SQLiteConnection(LoadConnectiobString()))
             {
-                con.Execute(query, _t);
+                con.Execute(_t.EditQuery, _t);
             }
         }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CrilieContactBook.Model
 {
-    public class Event
+    public class Event : I_DB_Query
     {
         public int Id { get; set; }
 
@@ -17,5 +17,10 @@ namespace CrilieContactBook.Model
         public string Description { get; set; }
 
         public bool Finished { get; set; }
+
+
+        public string AddQuery { get; set; } = "Insert into Event(ScheduledDate, Title, Description, Finished) values(@ScheduledDate,@Title, @Description,@Finished)";
+
+        public string EditQuery { get; set; } = "Update Event Set ScheduledDate=@ScheduledDate, Title=@Title, Description=@Description, Finished=@Finished Where Id=@Id";
     }
 }

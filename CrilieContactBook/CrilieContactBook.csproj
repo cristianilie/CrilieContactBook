@@ -79,11 +79,16 @@
     <Compile Include="ViewModels\Commands\ViewSwitchCommand.cs" />
     <Compile Include="ViewModels\ContactsViewModel.cs" />
     <Compile Include="ViewModels\EventsViewModel.cs" />
+    <Compile Include="Model\I_DB_Query.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\TodayActivityViewModel.cs" />
     <Compile Include="ViewModels\ToDoListViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\VM_Base.cs" />
     <Compile Include="Views\ContactsView.xaml.cs">
       <DependentUpon>ContactsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TodayActivityView.xaml.cs">
+      <DependentUpon>TodayActivityView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ToDoListView.xaml.cs">
       <DependentUpon>ToDoListView.xaml</DependentUpon>
@@ -108,6 +113,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ContactsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TodayActivityView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

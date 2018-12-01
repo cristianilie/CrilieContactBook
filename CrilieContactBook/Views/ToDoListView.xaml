@@ -15,13 +15,13 @@
             <Grid Background="{StaticResource TwinkleBlue}" DockPanel.Dock="Top" Width="280" Height="60">
                 <StackPanel>
                     <TextBlock Text="Task list filters: " Style="{StaticResource taskFilterTextBlockStyle}"/>
-                    <ComboBox ItemsSource="{Binding Source={vm:EnumBindingSourceExtension {x:Type vm:TaskListFilter}}}" SelectedItem="{Binding SelectedTaskFilter,UpdateSourceTrigger=PropertyChanged}" Height="28" FontSize="18"/>
+                    <ComboBox ItemsSource="{Binding Source={vm:EnumBindingSourceExtension {x:Type vm:TaskListFilter}}}" SelectedItem="{Binding SelectedItemFilter,UpdateSourceTrigger=PropertyChanged}" Height="28" FontSize="18"/>
                 </StackPanel>
             </Grid>
             
             <!--Task List-->
             <Grid DockPanel.Dock="Bottom" Width="280">
-                <ListView x:Name="lstvTasks" ItemsSource="{Binding TaskList, UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" SelectedItem="{Binding SelectedTask,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Background="{StaticResource LightBlueGreyGradient}">
+                <ListView x:Name="lstvTasks" ItemsSource="{Binding ItemsList, UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" SelectedItem="{Binding SelectedItem,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Background="{StaticResource LightBlueGreyGradient}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Style="{StaticResource ContactInfoDisplayStyles}" Text="{Binding Name}" Foreground="{StaticResource MaximumBlueGreen}"/>
@@ -37,26 +37,26 @@
                 
                 <!--Task Management Buttons-->
                 <StackPanel Orientation="Horizontal" Margin="0 15">
-                    <Button Style="{StaticResource tasksButtonsStyle}" Content="Add Task" Command="{Binding PrepareToAddNewTaskCommand}"/>
-                    <Button Style="{StaticResource tasksButtonsStyle}" Content="Edit Task" Command="{Binding PrepareToEditTaskCommand}"/>
-                    <Button Style="{StaticResource tasksButtonsStyle}" Content="Delete Task" Command="{Binding PrepareToDeleteTaskCommand}"/>
-                    <Button Style="{StaticResource tasksButtonsStyle}" Content="Completed!" Command="{Binding PrepareToCompleteTaskCommand}"/>
+                    <Button Style="{StaticResource tasksButtonsStyle}" Content="Add Task" Command="{Binding PrepareToAddNewItemCommand}"/>
+                    <Button Style="{StaticResource tasksButtonsStyle}" Content="Edit Task" Command="{Binding PrepareToEditItemCommand}"/>
+                    <Button Style="{StaticResource tasksButtonsStyle}" Content="Delete Task" Command="{Binding PrepareToDeleteItemCommand}"/>
+                    <Button Style="{StaticResource tasksButtonsStyle}" Content="Completed!" Command="{Binding PrepareToFinishActionCommand}"/>
                 </StackPanel>
                 
                 <!--Task Info/Edit fields-->
                 <StackPanel>
-                    <TextBox x:Name="taskTitleTxtBx" IsReadOnly="{Binding NotEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Text="{Binding SelectedTask.Name, UpdateSourceTrigger=Explicit}"/>
+                    <TextBox x:Name="taskTitleTxtBx" IsReadOnly="{Binding NotEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Text="{Binding SelectedItem.Name, UpdateSourceTrigger=Explicit}"/>
                     <ScrollViewer Height="100" Margin="0 0 7 0">
-                        <TextBox x:Name="taskDescriptionTxtBx" IsReadOnly="{Binding NotEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Height="100" Width="440" TextWrapping="Wrap" Text="{Binding SelectedTask.Description, UpdateSourceTrigger=Explicit}"/>
+                        <TextBox x:Name="taskDescriptionTxtBx" IsReadOnly="{Binding NotEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Height="100" Width="440" TextWrapping="Wrap" Text="{Binding SelectedItem.Description, UpdateSourceTrigger=Explicit}"/>
                     </ScrollViewer>
-                    <DatePicker x:Name="taskDateDtPicker" Style="{StaticResource deadlineDatePickerStyle}" Margin="5" SelectedDate="{Binding SelectedTask.Deadline, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <ComboBox x:Name="taskImportanceCbx" IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={vm:EnumBindingSourceExtension {x:Type vm:TaskImportance}}}" SelectedItem="{Binding SelectedTaskImportance, UpdateSourceTrigger=Explicit}" Style="{StaticResource taskListComboBoxStyle}"/>
+                    <DatePicker x:Name="taskDateDtPicker" Style="{StaticResource deadlineDatePickerStyle}" Margin="5" SelectedDate="{Binding SelectedItem.Deadline, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <ComboBox x:Name="taskImportanceCbx" IsReadOnly="{Binding NotEditable, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={vm:EnumBindingSourceExtension {x:Type vm:TaskImportance}}}" SelectedItem="{Binding SelectedItemImportance, UpdateSourceTrigger=Explicit}" Style="{StaticResource taskListComboBoxStyle}"/>
                 </StackPanel>
                 
-                <!--Task "Statistics"-->
-                <StackPanel Margin="5" Visibility="{Binding FinisherButtonsVisibility, UpdateSourceTrigger=PropertyChanged}">
+                <!--Task Action Confirm-->
+                <StackPanel Margin="5" Visibility="{Binding ConfirmActionVisibility, UpdateSourceTrigger=PropertyChanged}">
                     <StackPanel  Margin="0 4" Orientation="Horizontal">
-                        <Button x:Name="btnTaskFinisher" Click="btnTaskFinisher_Click" Content="{Binding ButtonFinisherText}" Style="{StaticResource tasksButtonsStyle}" Command="{Binding FinisherTaskCommand}" />
+                        <Button x:Name="btnTaskFinisher" Click="btnTaskFinisher_Click" Content="{Binding ButtonFinisherText}" Style="{StaticResource tasksButtonsStyle}" Command="{Binding FinisherCommand}" />
                         <Button Style="{StaticResource tasksButtonsStyle}" Content="Cancel"  Command="{Binding CancelCommand}"/>
                     </StackPanel>
                    

@@ -13,9 +13,9 @@
             <!--Calendar & Upcoming Events List-->
                 <StackPanel Margin="10" Width="210" DockPanel.Dock="Right">
                 <TextBlock Style="{StaticResource eventListTextBlockStyle}" Text="Upcoming events:" Height="28"/>
-                <ComboBox ItemsSource="{Binding Source={vm:EnumBindingSourceExtension {x:Type vm:EventListFilter}}}" SelectedItem="{Binding SelectedEventFilter, UpdateSourceTrigger=PropertyChanged}" Height="28" FontSize="18" Margin="0 0 0 15"/>
+                <ComboBox ItemsSource="{Binding Source={vm:EnumBindingSourceExtension {x:Type vm:EventListFilter}}}" SelectedItem="{Binding SelectedItemFilter, UpdateSourceTrigger=PropertyChanged}" Height="28" FontSize="18" Margin="0 0 0 15"/>
 
-                <ListView ItemsSource="{Binding EventList}" SelectedItem="{Binding SelectedEvent}" Background="{StaticResource AlmostBlack}" Height="262" Padding="0 5">
+                <ListView ItemsSource="{Binding ItemsList}" SelectedItem="{Binding SelectedItem}" Background="{StaticResource AlmostBlack}" Height="262" Padding="0 5">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Style="{StaticResource eventListItemTextBlockStyle}" Text="{Binding Title}" />
@@ -27,18 +27,18 @@
             <!--Event Info & CRUD Options-->
             <StackPanel DockPanel.Dock="Right" Margin="5 15">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10">
-                    <Button Style="{StaticResource eventsButtonsStyle}" Command="{Binding PrepareToAddNewEventCommand}" Content="Add"/>
-                    <Button Style="{StaticResource eventsButtonsStyle}" Command="{Binding PrepareToEditEventCommand}" Content="Edit"/>
-                    <Button Style="{StaticResource eventsButtonsStyle}" Command="{Binding PrepareToDeleteEventCommand}" Content="Delete"/>
-                    <Button Style="{StaticResource eventsButtonsStyle}" Command="{Binding PrepareToCompleteEventCommand}" Content="Finish"/>
+                    <Button Style="{StaticResource eventsButtonsStyle}" Command="{Binding PrepareToAddNewItemCommand}" Content="Add"/>
+                    <Button Style="{StaticResource eventsButtonsStyle}" Command="{Binding PrepareToEditItemCommand}" Content="Edit"/>
+                    <Button Style="{StaticResource eventsButtonsStyle}" Command="{Binding PrepareToDeleteItemCommand}" Content="Delete"/>
+                    <Button Style="{StaticResource eventsButtonsStyle}" Command="{Binding PrepareToFinishActionCommand}" Content="Finish"/>
                 </StackPanel>
                 <StackPanel Margin="10">
-                    <TextBox x:Name="eventTitleTxtBx" Style="{StaticResource eventTitleTextBoxStyle}" IsReadOnly="{Binding NotEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Text="{Binding SelectedEvent.Title, UpdateSourceTrigger=Explicit}" Margin="0 5"/>
-                    <DatePicker x:Name="eventScheduledDateDtPicker" Style="{StaticResource eventSchedulerPickerStyle}" CalendarStyle="{StaticResource StyleCalendar}" SelectedDate="{Binding SelectedEvent.ScheduledDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 10"/>
-                    <TextBox x:Name="eventDescriptionTxtBx" IsReadOnly="{Binding NotEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource eventTitleTextBoxStyle}" Text="{Binding SelectedEvent.Description, UpdateSourceTrigger=Explicit}" Height="110" MaxHeight="110" Margin="0 5"/>
+                    <TextBox x:Name="eventTitleTxtBx" Style="{StaticResource eventTitleTextBoxStyle}" IsReadOnly="{Binding NotEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Text="{Binding SelectedItem.Title, UpdateSourceTrigger=Explicit}" Margin="0 5"/>
+                    <DatePicker x:Name="eventScheduledDateDtPicker" Style="{StaticResource eventSchedulerPickerStyle}" CalendarStyle="{StaticResource StyleCalendar}" SelectedDate="{Binding SelectedItem.ScheduledDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 10"/>
+                    <TextBox x:Name="eventDescriptionTxtBx" IsReadOnly="{Binding NotEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource eventTitleTextBoxStyle}" Text="{Binding SelectedItem.Description, UpdateSourceTrigger=Explicit}" Height="110" MaxHeight="110" Margin="0 5"/>
                 </StackPanel>
                 <StackPanel Visibility="{Binding FinisherButtonsVisibility, UpdateSourceTrigger=PropertyChanged}" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10">
-                    <Button x:Name="btnEventFinisher" Click="btnEventFinisher_Click" Style="{StaticResource eventsButtonsStyle}"  Content="{Binding ButtonFinisherText}" Command="{Binding FinisherEventCommand}" />
+                    <Button x:Name="btnEventFinisher" Click="btnEventFinisher_Click" Style="{StaticResource eventsButtonsStyle}"  Content="{Binding ButtonFinisherText}" Command="{Binding FinisherCommand}" />
                     <Button Style="{StaticResource eventsButtonsStyle}" Content="Cancel" Command="{Binding CancelCommand}" />
                 </StackPanel>
             </StackPanel>
