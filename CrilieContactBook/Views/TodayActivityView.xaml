@@ -5,26 +5,24 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CrilieContactBook.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="350" d:DesignWidth="400"
+             d:DesignHeight="300" d:DesignWidth="300"
              Background="{StaticResource  LightBlueGreyGradient}">
     <Grid>
         <StackPanel Margin="5">
             
             <!--Today's Events and Tasks to complete-->
-            <ListView ItemsSource="{Binding}" SelectedItem="{Binding}" Background="{StaticResource AlmostBlack}" Padding="10">
+            <ListView ItemsSource="{Binding ItemsList}" SelectedItem="{Binding SelectedActivity}" Background="{StaticResource AlmostBlack}" Padding="10" MinHeight="250">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Style="{StaticResource eventListItemTextBlockStyle}" Text="{Binding}" />
+                        <TextBlock Style="{StaticResource eventListItemTextBlockStyle}" Text="{Binding Title}" Foreground="Red"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
             
             <!--Notification Action Buttons-->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Style="{StaticResource tasksButtonsStyle}" Background="{StaticResource AlmostBlack}" Width="90" Content="View" />
-                <Button Style="{StaticResource tasksButtonsStyle}" Background="{StaticResource AlmostBlack}" Width="90" Content="Remove" />
-                <Button Style="{StaticResource tasksButtonsStyle}" Background="{StaticResource AlmostBlack}" Width="90" Content="Postpone" />
-                <Button Style="{StaticResource tasksButtonsStyle}" Background="{StaticResource AlmostBlack}" Width="90" Content="Dismiss" />
+                <Button Style="{StaticResource tasksButtonsStyle}" Background="{StaticResource AlmostBlack}" Command="{Binding DisplayActivityCommand}" Width="90" Content="View" />
+                <Button Style="{StaticResource tasksButtonsStyle}" Background="{StaticResource AlmostBlack}" Command="{Binding IgnoreCommand}" Width="90" Content="Ignore" />
             </StackPanel>
         </StackPanel>
     </Grid>

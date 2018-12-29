@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CrilieContactBook.Model
 {
-    public class Event : I_DB_Query
+    public class Event : I_DB_Query, IActivityEntity
     {
         public int Id { get; set; }
 

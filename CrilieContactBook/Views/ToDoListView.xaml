@@ -24,7 +24,7 @@
                 <ListView x:Name="lstvTasks" ItemsSource="{Binding ItemsList, UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" SelectedItem="{Binding SelectedItem,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Background="{StaticResource LightBlueGreyGradient}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Style="{StaticResource ContactInfoDisplayStyles}" Text="{Binding Name}" Foreground="{StaticResource MaximumBlueGreen}"/>
+                            <TextBlock Style="{StaticResource ContactInfoDisplayStyles}" Text="{Binding Title}" Foreground="{StaticResource MaximumBlueGreen}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -45,7 +45,7 @@
                 
                 <!--Task Info/Edit fields-->
                 <StackPanel>
-                    <TextBox x:Name="taskTitleTxtBx" IsReadOnly="{Binding NotEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Text="{Binding SelectedItem.Name, UpdateSourceTrigger=Explicit}"/>
+                    <TextBox x:Name="taskTitleTxtBx" IsReadOnly="{Binding NotEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Text="{Binding SelectedItem.Title, UpdateSourceTrigger=Explicit}"/>
                     <ScrollViewer Height="100" Margin="0 0 7 0">
                         <TextBox x:Name="taskDescriptionTxtBx" IsReadOnly="{Binding NotEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource taskListTextBoxStyle}" Height="100" Width="440" TextWrapping="Wrap" Text="{Binding SelectedItem.Description, UpdateSourceTrigger=Explicit}"/>
                     </ScrollViewer>

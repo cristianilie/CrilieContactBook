@@ -32,7 +32,6 @@ namespace CrilieContactBook.ViewModels
             }
         }
 
-
         //Task List Filter - filters the tasklist by TaskListFilters enum and displays All/Active/Completed/Failed tasks
         private TaskListFilter selectedItemFilter;
         public TaskListFilter SelectedItemFilter
@@ -62,6 +61,8 @@ namespace CrilieContactBook.ViewModels
             }
         }
 
+        //Temporary Selected Task - used to see the selected item when we are coming from TodayActivityView
+        public static TaskToComplete TempSelectedTask { get; set; }
 
         //Default constructor
         public ToDoListViewModel()
@@ -75,8 +76,23 @@ namespace CrilieContactBook.ViewModels
             ConfirmActionVisibility = Visibility.Hidden;
             SelectedItemFilter = TaskListFilter.Active;
             SelectedItemImportance = TaskImportance.Average;
+
+            if (TempSelectedTask != null)
+                SelectedItem = TempSelectedTask;
         }
 
+        //Overloaded Constructor
+        //Gets called when we select the view option in TodayActivityView(and the selected item is a TaskToComplete)
+        public ToDoListViewModel(TaskToComplete task)
+        {
+            TodaySelectedActivity(task);
+        }
+
+        //Initialises the TempSelectedTask, so se can see it when we are coming from TodayActivityView
+        private void TodaySelectedActivity(TaskToComplete task)
+        {
+            TempSelectedTask = task;
+        }
 
         //Sets up the command and wires it up with the method to add a new item to the TaskToComplete db table
         public override void PrepareToAddItem()
@@ -165,7 +181,6 @@ namespace CrilieContactBook.ViewModels
             }
         }
 
-
         //Sets up the command and wires it up with the method to "mark as completed" the Selected Item
         private void PrepareMarkAsCompleted()
         {
@@ -188,8 +203,6 @@ namespace CrilieContactBook.ViewModels
                 ConfirmActionVisibility = System.Windows.Visibility.Hidden;
             }
         }
-
-
 
         //Checks if the current selected Date in the datetime picker is valid
         private bool CheckDate(DateTime dateToCkeck)

@@ -23,6 +23,7 @@ namespace CrilieContactBook.Views
         public TodayActivityView()
         {
             InitializeComponent();
+
         }
     }
 }

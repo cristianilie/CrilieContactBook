@@ -1,18 +1,20 @@
-﻿using CrilieContactBook.ViewModels.Commands;
+﻿using CrilieContactBook.Model;
+using CrilieContactBook.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CrilieContactBook.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
         private object currentView;
-
         public object CurrentView
         {
             get { return currentView; }
@@ -22,7 +24,6 @@ namespace CrilieContactBook.ViewModels
         }
 
         private ContactsViewModel contactVM;
-
         public ContactsViewModel ContactVM
         {
             get { return contactVM; }
@@ -32,7 +33,6 @@ namespace CrilieContactBook.ViewModels
         }
 
         private EventsViewModel eventsVM;
-
         public EventsViewModel EventsVM
         {
             get { return eventsVM; }
@@ -43,7 +43,6 @@ namespace CrilieContactBook.ViewModels
         }
 
         private ToDoListViewModel toDoListVM;
-
         public ToDoListViewModel ToDoListVM
         {
             get { return toDoListVM; }
@@ -53,6 +52,15 @@ namespace CrilieContactBook.ViewModels
             }
         }
 
+        private TodayActivityViewModel todayActivityVM;
+        public TodayActivityViewModel TodayActivityVM
+        {
+            get { return todayActivityVM; }
+            set {
+                todayActivityVM = value;
+                RaisePropertyChanged();
+            }
+        }
 
         //Commands
         public ViewSwitchCommand ContactsViewSwitchCommand { get; private set; }
@@ -65,17 +73,31 @@ namespace CrilieContactBook.ViewModels
             ContactVM = new ContactsViewModel();
             EventsVM = new EventsViewModel();
             ToDoListVM = new ToDoListViewModel();
-            CurrentView = ContactVM;
-
+            TodayActivityVM = new TodayActivityViewModel(this);
+            CurrentView = TodayActivityVM;
             ContactsViewSwitchCommand = new ViewSwitchCommand(DisplayContactView);
             EventsViewSwitchCommand = new ViewSwitchCommand(DisplayEventsView);
             ToDoListViewSwitchCommand = new ViewSwitchCommand(DisplayToDoListtView);
         }
 
         //Methods to change the current (child)view
-        private void DisplayContactView() => CurrentView = ContactVM;
+        public void DisplayContactView() => CurrentView = ContactVM;
         private void DisplayEventsView() => CurrentView = EventsVM;
         private void DisplayToDoListtView() => CurrentView = ToDoListVM;
+
+        //Changes the current view, to Events/ToDoList view, according to the type of rhe selected item in TodayActivity view
+        public void SeeDetailedActivity(IActivityEntity activity)
+        {
+            if (activity.GetType().Equals(typeof(Event)))
+            {
+                CurrentView = new EventsViewModel(activity as Event);
+            }
+            else
+            {
+                CurrentView = new ToDoListViewModel(activity as TaskToComplete);
+            }
+        }
+
 
         /// <summary>
         /// INotifyPropertyChanged implementation

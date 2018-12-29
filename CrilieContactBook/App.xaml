@@ -23,6 +23,10 @@
             <views:ToDoListView/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewModels:TodayActivityViewModel}">
+            <views:TodayActivityView/>
+        </DataTemplate>
+
 
         <!--Brushes (Palette from: https://flatuicolors.com/palette/de)-->
         <SolidColorBrush x:Key="BlueHorizon" Color="#FF4B6584"/>

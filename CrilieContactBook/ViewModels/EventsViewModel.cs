@@ -50,6 +50,8 @@ namespace CrilieContactBook.ViewModels
             }
         }
 
+        //Temporary Selected Event - used to see the selected item when we are coming from TodayActivityView
+        public static Event TempSelectedEvent { get; set; }
 
         //Default Constructor
         public EventsViewModel()
@@ -61,7 +63,18 @@ namespace CrilieContactBook.ViewModels
             PrepareToFinishActionCommand = new IntermediaryCommand(PrepareToFinish);
             CancelCommand = new IntermediaryCommand(Cancel);
             ConfirmActionVisibility = Visibility.Hidden;
+
+            if (TempSelectedEvent != null)
+                SelectedItem = TempSelectedEvent;
         }
+
+        //Overloaded Constructor
+        //Gets called when we select the view option in TodayActivityView(and the selected item is an Event)
+        public EventsViewModel(Event activity)
+        {
+            TodaySelectedActivity(activity);
+        }
+
 
         //Sets up the command and wires it up with the method to add a new Item(Event) to the Event db table
         public override void PrepareToAddItem()
@@ -94,6 +107,7 @@ namespace CrilieContactBook.ViewModels
             SelectedItemFilter = EventListFilter.All_Active;
         }
 
+
         //Sets up the command and wires it up with the method to edit/update the Selected Item(Event)
         public override void PrepareToEditItem()
         {
@@ -124,6 +138,7 @@ namespace CrilieContactBook.ViewModels
             }
         }
                
+
         //Sets up the command and wires it up with the method to delete the Selected Item(Event)
         public override void PrepareToDeleteItem()
         {
@@ -170,8 +185,6 @@ namespace CrilieContactBook.ViewModels
             }
         }
 
-      
-
         //Checks if the current selected Date in the datetime picker is valid
         private bool CheckDate(DateTime dateToCkeck)
         {
@@ -189,6 +202,12 @@ namespace CrilieContactBook.ViewModels
 
             ConfirmActionVisibility = System.Windows.Visibility.Hidden;
             return false;
+        }
+
+        //Initialises the TempSelectedEvent, so se can see it when we are coming from TodayActivityView
+        private void TodaySelectedActivity(Event _event)
+        {
+            TempSelectedEvent = _event;
         }
     }
 

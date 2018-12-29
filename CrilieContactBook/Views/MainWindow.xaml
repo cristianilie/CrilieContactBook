@@ -33,10 +33,7 @@
             <Grid Grid.Column="2">
                 <Button Style="{StaticResource selectViewButtonsStyle}" Content="To Do List" Command="{Binding ToDoListViewSwitchCommand, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
-
         </Grid>
-
-
 
         <Grid DockPanel.Dock="Bottom">
             <ContentControl Content="{Binding CurrentView}" />

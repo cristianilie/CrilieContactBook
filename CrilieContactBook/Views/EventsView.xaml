@@ -37,7 +37,7 @@
                     <DatePicker x:Name="eventScheduledDateDtPicker" Style="{StaticResource eventSchedulerPickerStyle}" CalendarStyle="{StaticResource StyleCalendar}" SelectedDate="{Binding SelectedItem.ScheduledDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 10"/>
                     <TextBox x:Name="eventDescriptionTxtBx" IsReadOnly="{Binding NotEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource eventTitleTextBoxStyle}" Text="{Binding SelectedItem.Description, UpdateSourceTrigger=Explicit}" Height="110" MaxHeight="110" Margin="0 5"/>
                 </StackPanel>
-                <StackPanel Visibility="{Binding FinisherButtonsVisibility, UpdateSourceTrigger=PropertyChanged}" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10">
+                <StackPanel Visibility="{Binding ConfirmActionVisibility, UpdateSourceTrigger=PropertyChanged}" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10">
                     <Button x:Name="btnEventFinisher" Click="btnEventFinisher_Click" Style="{StaticResource eventsButtonsStyle}"  Content="{Binding ButtonFinisherText}" Command="{Binding FinisherCommand}" />
                     <Button Style="{StaticResource eventsButtonsStyle}" Content="Cancel" Command="{Binding CancelCommand}" />
                 </StackPanel>
